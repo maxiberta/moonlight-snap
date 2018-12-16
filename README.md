@@ -5,7 +5,9 @@
 </h1>
 
 <p align="center">
-  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt">moonlight</a></b>, <i>an open-source NVIDIA GameStream client</i>. It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
+  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt">moonlight</a></b>, <i>an open-source NVIDIA GameStream client</i>.
+  <br/>
+  It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
 </p>
 
 <p align="center">
@@ -38,6 +40,6 @@ Or, if you're feeling adventurous, try the in-progress _next release_ from the `
 
 ## Upstream
 
-| [![hishamhm](https://avatars3.githubusercontent.com/u/245621?s=128&v=4)](https://github.com/hishamhm) |
+| [![moonlight-stream](https://avatars0.githubusercontent.com/u/6118379?s=200&v=4)](https://github.com/moonlight-stream) |
 | :---: |
-| [](https://github.com/hishamhm) |
+| [](https://github.com/moonlight-stream) |
