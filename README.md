@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt">moonlight</a></b>, <i>an open-source NVIDIA GameStream client</i>.
+  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt"><code>Moonlight</code></a></b>, <i>an open-source <a href="https://www.nvidia.com/en-us/shield/games/gamestream/">NVIDIA GameStream</a> client</i>.
   <br/>
   It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
 </p>
