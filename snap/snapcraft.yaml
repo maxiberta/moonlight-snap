@@ -1,0 +1,143 @@
+name: moonlight
+base: core18
+version: master
+version-script: git -C parts/moonlight-qt/build/ describe --tags
+adopt-info: moonlight-qt
+description: |
+  Moonlight can stream games and other applications from a PC with an NVIDIA GeForce GTX 600-series or higher GPU and GeForce Experience installed.
+
+  Features include:
+  - Streaming at up to 4K resolution
+  - Support for up to 120 FPS streaming (high refresh rate monitor recommended)
+  - Hardware accelerated video decoding with VAAPI and VDPAU support
+  - 5.1 surround sound audio support
+  - HEVC support for better video compression efficiency
+  - Gamepad support with SDL mapping compatibility
+
+grade: stable
+confinement: strict
+icon: snap/local/moonlight.svg
+license: GPL-3.0+
+
+apps:
+  moonlight:
+    command: desktop-launch snapcraft-preload moonlight
+    common-id: com.moonlight_stream.Moonlight
+    desktop: usr/share/applications/com.moonlight_stream.Moonlight.desktop
+    plugs:
+      - desktop
+      - desktop-legacy
+      - home
+      - network
+      - opengl
+      - pulseaudio
+      - screen-inhibit-control
+      - unity7
+      - wayland
+      - x11
+
+parts:
+  moonlight-qt:
+    plugin: qmake
+    qt-version: qt5
+    options: [PREFIX=/usr]
+    source: https://github.com/moonlight-stream/moonlight-qt.git
+    source-type: git
+    source-tag: v0.7.0
+    parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    build-packages:
+      - libssl-dev
+      - libavcodec-dev
+      - libopus-dev
+      - libva-dev
+      - libvdpau-dev
+      - libsdl2-dev
+      - qtquickcontrols2-5-dev
+      - qtdeclarative5-dev
+      - libqt5svg5-dev
+    stage-packages:
+      - libopus0
+      - libva-drm2
+      - libva-x11-2
+      - libva-wayland2
+      - libsndfile1
+      - libasound2
+      - libasyncns0
+      - libdouble-conversion1
+      - libfreetype6
+      - libgl1
+      - libgraphite2-3
+      - libharfbuzz0b
+      - libicu60
+      - libpng16-16
+      - libpulse0
+      - libqt5core5a
+      - libqt5network5
+      - libqt5qml5
+      - libqt5quick5
+      - libqt5quickcontrols2-5
+      - libqt5quicktemplates2-5
+      - libqt5svg5
+      - libqt5widgets5
+      - libsdl2-2.0-0
+      - libsndio6.1
+      - libvdpau1
+      - libwayland-cursor0
+      - libwayland-egl1-mesa
+      - libxcursor1
+      - libxi6
+      - libxinerama1
+      - libxrandr2
+      - libxrender1
+      - libxss1
+      - libxxf86vm1
+      - qml-module-qtquick2
+      - qml-module-qtquick-controls
+      - qml-module-qtquick-controls2
+      - qml-module-qtquick-dialogs
+      - qml-module-qtquick-layouts
+      - qml-module-qtquick-window2
+      - mesa-va-drivers
+      - mesa-vdpau-drivers
+      - libvdpau-va-gl1
+      - i965-va-driver
+      - vdpau-va-driver
+      - va-driver-all
+      - libdrm2
+    after:
+      - desktop-qt5
+      - ffmpeg
+  ffmpeg:
+    plugin: autotools
+    source: https://git.ffmpeg.org/ffmpeg.git
+    source-type: git
+    source-branch: release/4.0
+    configflags:
+      - --prefix=/usr
+      - --enable-pic
+      - --enable-shared
+      - --disable-static
+      - --disable-all
+      - --enable-avcodec
+      - --enable-decoder=h264
+      - --enable-decoder=hevc
+      - --enable-hwaccel=h264_vaapi
+      - --enable-hwaccel=hevc_vaapi
+      - --enable-hwaccel=h264_vdpau
+      - --enable-hwaccel=hevc_vdpau
+    build-packages:
+      - libva-dev
+      - libvdpau-dev
+      - libx265-dev
+      - nasm
+  desktop-qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-branch: stable
+    source-subdir: qt
+    plugin: make
+  snapcraft-preload:
+    source: https://github.com/sergiusens/snapcraft-preload.git
+    plugin: cmake
+    build-packages:
+      - gcc-multilib
+      - g++-multilib
