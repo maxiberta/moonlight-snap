@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://moonlight-stream.org/"><img src="https://moonlight-stream.org/images/manifest/icons-144.png" alt="moonlight"></a>
   <br />
-  moonlight
+  Moonlight
 </h1>
 
 <p align="center">
