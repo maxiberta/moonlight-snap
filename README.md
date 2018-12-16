@@ -42,4 +42,4 @@ Or, if you're feeling adventurous, try the in-progress _next release_ from the `
 
 | [![moonlight-stream](https://avatars0.githubusercontent.com/u/6118379?s=200&v=4)](https://github.com/moonlight-stream) |
 | :---: |
-| [](https://github.com/moonlight-stream) |
+| [moonlight-stream](https://github.com/moonlight-stream) |
