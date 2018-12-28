@@ -14,7 +14,7 @@ description: |
   - HEVC support for better video compression efficiency
   - Gamepad support with SDL mapping compatibility
 
-grade: stable
+grade: devel
 confinement: strict
 icon: moonlight_wix.png
 passthrough:
@@ -51,7 +51,7 @@ parts:
     qt-version: qt5
     options: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v0.8.0
+    source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     build-packages:
       - qtbase5-dev
@@ -129,7 +129,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n4.1
+    source-branch: master
     configflags:
       - --prefix=/usr
       - --enable-pic
