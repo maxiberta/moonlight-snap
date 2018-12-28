@@ -16,7 +16,7 @@ description: |
 
 grade: devel
 confinement: strict
-icon: moonlight_wix.png
+icon: snap/local/moonlight_wix.png
 passthrough:
   license: GPL-3.0+
 
