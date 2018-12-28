@@ -16,18 +16,20 @@ description: |
 
 grade: stable
 confinement: strict
-icon: snap/local/moonlight.svg
-license: GPL-3.0+
+icon: moonlight_wix.png
+passthrough:
+  license: GPL-3.0+
 
 apps:
   moonlight:
-    command: desktop-launch snapcraft-preload moonlight
+    command: desktop-launch $SNAP/bin/wrapper $SNAP/usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     desktop: usr/share/applications/com.moonlight_stream.Moonlight.desktop
     plugs:
       - desktop
       - desktop-legacy
       - home
+      - joystick
       - network
       - opengl
       - pulseaudio
@@ -37,60 +39,38 @@ apps:
       - x11
 
 parts:
+  moonlight-wrapper:
+    plugin: dump
+    source: snap/local/
+    stage-packages:
+      - mesa-utils
+    organize:
+      'wrapper': /bin/
   moonlight-qt:
     plugin: qmake
     qt-version: qt5
     options: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-type: git
-    source-tag: v0.7.0
+    source-tag: v0.8.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     build-packages:
-      - libssl-dev
-      - libavcodec-dev
+      - qtbase5-dev
+      - qtquickcontrols2-5-dev
+      - libqt5svg5-dev
+      - qtmultimedia5-dev
+      - libgl1-mesa-dev
+      - libegl1-mesa-dev
+      - libxkbcommon-dev
+      - wayland-protocols
       - libopus-dev
+      - libavcodec-dev
+      - libavutil-dev
       - libva-dev
       - libvdpau-dev
       - libsdl2-dev
-      - qtquickcontrols2-5-dev
       - qtdeclarative5-dev
-      - libqt5svg5-dev
+      - libssl-dev
     stage-packages:
-      - libopus0
-      - libva-drm2
-      - libva-x11-2
-      - libva-wayland2
-      - libsndfile1
-      - libasound2
-      - libasyncns0
-      - libdouble-conversion1
-      - libfreetype6
-      - libgl1
-      - libgraphite2-3
-      - libharfbuzz0b
-      - libicu60
-      - libpng16-16
-      - libpulse0
-      - libqt5core5a
-      - libqt5network5
-      - libqt5qml5
-      - libqt5quick5
-      - libqt5quickcontrols2-5
-      - libqt5quicktemplates2-5
-      - libqt5svg5
-      - libqt5widgets5
-      - libsdl2-2.0-0
-      - libsndio6.1
-      - libvdpau1
-      - libwayland-cursor0
-      - libwayland-egl1-mesa
-      - libxcursor1
-      - libxi6
-      - libxinerama1
-      - libxrandr2
-      - libxrender1
-      - libxss1
-      - libxxf86vm1
       - qml-module-qtquick2
       - qml-module-qtquick-controls
       - qml-module-qtquick-controls2
@@ -104,14 +84,52 @@ parts:
       - vdpau-va-driver
       - va-driver-all
       - libdrm2
+      - libva-drm2
+      - libva-x11-2
+      - libva-wayland2
+      - libvdpau1
+
+      - libasound2
+      - libasyncns0
+      - libblkid1
+      - libflac8
+      - libgcc1
+      - libgcrypt20
+      - libgpg-error0
+      - liblz4-1
+      - liblzma5
+      - libmount1
+      - libogg0
+      - libopus0
+      - libpcre3
+      - libpulse0
+      - libqt5svg5
+      - libsdl2-2.0-0
+      - libselinux1
+      - libsndfile1
+      - libsndio6.1
+      - libstdc++6
+      - libsystemd0
+      - libtinfo5
+      - libudev1
+      - libuuid1
+      - libvorbis0a
+      - libvorbisenc2
+      - libwayland-cursor0
+      - libwayland-egl1-mesa
+      - libwrap0
+      - libxcursor1
+      - libxinerama1
+      - libxrandr2
+      - libxss1
+      - zlib1g
     after:
       - desktop-qt5
       - ffmpeg
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-type: git
-    source-branch: release/4.0
+    source-tag: n4.1
     configflags:
       - --prefix=/usr
       - --enable-pic
@@ -135,9 +153,3 @@ parts:
     source-branch: stable
     source-subdir: qt
     plugin: make
-  snapcraft-preload:
-    source: https://github.com/sergiusens/snapcraft-preload.git
-    plugin: cmake
-    build-packages:
-      - gcc-multilib
-      - g++-multilib
