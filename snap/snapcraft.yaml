@@ -1,5 +1,4 @@
 name: moonlight
-base: core18
 version: master
 version-script: git -C parts/moonlight-qt/build/ describe --tags
 adopt-info: moonlight-qt
@@ -45,19 +44,19 @@ parts:
     stage-packages:
       - mesa-utils
     organize:
-      'wrapper': /bin/
+      wrapper: /bin/
+
   moonlight-qt:
-    plugin: qmake
-    qt-version: qt5
-    options: [PREFIX=/usr]
+    plugin: make
+    override-build: |
+      export PATH=$SNAPCRAFT_STAGE/usr/lib/qt5/bin:$PATH
+      cat $SNAPCRAFT_STAGE/usr/lib/x86_64-linux-gnu/qt5/qt.conf | sed s,Prefix=/usr,Prefix=$SNAPCRAFT_STAGE/usr, >$SNAPCRAFT_PART_BUILD/qt.conf
+      qmake CONFIG+=static LIBS+="-L$SNAPCRAFT_PART_INSTALL/lib" LIBS+="-L$SNAPCRAFT_PART_INSTALL/usr/lib" LIBS+="-L$SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu" LIBS+="-L$SNAPCRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu" INCLUDEPATH+="$SNAPCRAFT_PART_INSTALL/usr/include" LIBS+="-L$SNAPCRAFT_STAGE/usr/lib" INCLUDEPATH+="$SNAPCRAFT_STAGE/usr/include" -qtconf /home/max/src/moonlight-snap/parts/moonlight-qt/build/qt.conf PREFIX=$SNAPCRAFT_PART_INSTALL/usr
+      snapcraftctl build
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
-    parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    parse-info: [app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml]
     build-packages:
-      - qtbase5-dev
-      - qtquickcontrols2-5-dev
-      - libqt5svg5-dev
-      - qtmultimedia5-dev
       - libgl1-mesa-dev
       - libegl1-mesa-dev
       - libxkbcommon-dev
@@ -67,16 +66,8 @@ parts:
       - libavutil-dev
       - libva-dev
       - libvdpau-dev
-      - libsdl2-dev
-      - qtdeclarative5-dev
       - libssl-dev
     stage-packages:
-      - qml-module-qtquick2
-      - qml-module-qtquick-controls
-      - qml-module-qtquick-controls2
-      - qml-module-qtquick-dialogs
-      - qml-module-qtquick-layouts
-      - qml-module-qtquick-window2
       - mesa-va-drivers
       - mesa-vdpau-drivers
       - libvdpau-va-gl1
@@ -84,14 +75,14 @@ parts:
       - vdpau-va-driver
       - va-driver-all
       - libdrm2
-      - libva-drm2
-      - libva-x11-2
-      - libva-wayland2
+      - libva-drm1
+      - libva-x11-1
+      - libva-wayland1
       - libvdpau1
-
       - libasound2
       - libasyncns0
       - libblkid1
+      - libc6
       - libflac8
       - libgcc1
       - libgcrypt20
@@ -103,8 +94,6 @@ parts:
       - libopus0
       - libpcre3
       - libpulse0
-      - libqt5svg5
-      - libsdl2-2.0-0
       - libselinux1
       - libsndfile1
       - libsndio6.1
@@ -125,7 +114,10 @@ parts:
       - zlib1g
     after:
       - desktop-qt5
+      - kde-frameworks-5-dev
       - ffmpeg
+      - sdl2
+
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
@@ -148,8 +140,148 @@ parts:
       - libvdpau-dev
       - libx265-dev
       - nasm
+
+  sdl2:
+    source: https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
+    plugin: autotools
+    configflags:
+      - --prefix=/usr
+      - --disable-alsa
+      - --disable-arts
+      - --disable-esd
+      - --disable-nas
+      - --disable-oss
+    build-packages:
+      - fcitx-libs-dev
+      - libegl1-mesa-dev
+      - libgl1-mesa-dev
+      - libgles2-mesa-dev
+      - libibus-1.0-dev
+      - libjack-dev
+      - libpulse-dev
+      - libsamplerate0-dev
+      - libsndfile1-dev
+      - libvulkan-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxcursor-dev
+      - libxext-dev
+      - libxi-dev
+      - libxinerama-dev
+      - libxkbcommon-dev
+      - libxrandr-dev
+      - libxrender-dev
+      - libxss-dev
+      - libxxf86vm-dev
+    stage-packages:
+      - fcitx-libs
+      - libdrm2
+      - libegl1-mesa
+      - libgl1
+      - libgles2
+      - libibus-1.0-5
+      - libjack0
+      - libpulse0
+      - libsamplerate0
+      - libsndfile1
+      - libwayland-client0
+      - libwayland-egl1-mesa
+      - libvulkan1
+      - libx11-6
+      - libxcursor1
+      - libxext6
+      - libxi6
+      - libxinerama1
+      - libxkbcommon0
+      - libxrandr2
+      - libxrender1
+      - libxss1
+      - libxxf86vm1
+
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-branch: stable
     source-subdir: qt
     plugin: make
+
+  kde-frameworks-5-dev:
+    plugin: dump
+    source: http://build.neon.kde.org/job/kde-frameworks-5-release_amd64.snap/lastSuccessfulBuild/artifact/kde-frameworks-5-dev_amd64.tar.xz
+    stage:
+      - -etc/drirc
+      - -lib/x86_64-linux-gnu/libglib-2.0.so.0.4800.2
+      - -lib/x86_64-linux-gnu/libpcre.so.3
+      - -lib/x86_64-linux-gnu/libudev.so.1.6.4
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-resources
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas
+      - -usr/lib/x86_64-linux-gnu/libLLVM*
+      - -usr/lib/x86_64-linux-gnu/libQt5Web*
+      - -usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libX11.so.6.3.0
+      - -usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2
+      - -usr/lib/x86_64-linux-gnu/libcapnp-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libcapnp-rpc-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libcapnpc-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_intel.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_nouveau.so.2.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_radeon.so.1.0.1
+      - -usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libjack.so.0
+      - -usr/lib/x86_64-linux-gnu/libkj-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libkj-async-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libwayland-client.so.0.3.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-server.so.0.1.0
+      - -usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/mesa*
+      - -usr/share/X11/locale/
+      - -usr/share/libdrm/amdgpu.ids
+    prime:
+      - lib/
+      - usr/lib/
+
+      - -etc/drirc
+      - -lib/x86_64-linux-gnu/libglib-2.0.so.0.4800.2
+      - -lib/x86_64-linux-gnu/libpcre.so.3
+      - -lib/x86_64-linux-gnu/libudev.so.1.6.4
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-resources
+      - -usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas
+      - -usr/lib/x86_64-linux-gnu/libLLVM*
+      - -usr/lib/x86_64-linux-gnu/libQt5Web*
+      - -usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libX11.so.6.3.0
+      - -usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2
+      - -usr/lib/x86_64-linux-gnu/libcapnp-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libcapnp-rpc-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libcapnpc-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_intel.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_nouveau.so.2.0.0
+      - -usr/lib/x86_64-linux-gnu/libdrm_radeon.so.1.0.1
+      - -usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.4800.2
+      - -usr/lib/x86_64-linux-gnu/libkj-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libkj-async-0.5.3.so
+      - -usr/lib/x86_64-linux-gnu/libwayland-client.so.0.3.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.0.0
+      - -usr/lib/x86_64-linux-gnu/libwayland-server.so.0.1.0
+      - -usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0
+      - -usr/lib/x86_64-linux-gnu/mesa*
+      - -usr/share/X11/locale/
+      - -usr/share/libdrm/amdgpu.ids
