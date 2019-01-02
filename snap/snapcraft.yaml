@@ -85,7 +85,6 @@ parts:
       - libva-x11-2
       - libva-wayland2
       - libvdpau1
-
       - libasound2
       - libasyncns0
       - libblkid1
@@ -123,6 +122,7 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
+
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
@@ -145,8 +145,15 @@ parts:
       - libvdpau-dev
       - libx265-dev
       - nasm
+
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-branch: stable
     source-subdir: qt
     plugin: make
+
+  fix-icon:
+    plugin: nil
+    override-build:
+      sed -i 's|Icon=moonlight|Icon=/usr/share/icons/hicolor/scalable/apps/moonlight.svg|' $SNAPCRAFT_STAGE/usr/share/applications/com.moonlight_stream.Moonlight.desktop
+    after: [moonlight-qt]
