@@ -41,7 +41,7 @@ parts:
   va-wrapper:
     plugin: dump
     source: snap/local/
-    stage-packages: [mesa-utils]
+    stage-packages: [mesa-utils, vainfo, vdpauinfo]
 
   moonlight-qt:
     plugin: qmake
