@@ -14,12 +14,9 @@ case "$SNAP_ARCH" in
 esac
 
 VENDOR=$(glxinfo | grep "OpenGL vendor")
-echo "VENDOR:" $VENDOR
 
-if [[ $VENDOR == *"Intel"* ]]; then
-  export VDPAU_DRIVER_PATH="$SNAP/usr/lib/$ARCH/dri"
-  export LIBVA_DRIVERS_PATH="$SNAP/usr/lib/$ARCH/dri"
-fi
+export VDPAU_DRIVER_PATH="$SNAP/usr/lib/$ARCH/vdpau"
+export LIBVA_DRIVERS_PATH="$SNAP/usr/lib/$ARCH/dri"
 
 if [[ $VENDOR == *"NVIDIA"* ]]; then
   export VDPAU_DRIVER_PATH="/var/lib/snapd/lib/gl/vdpau"
