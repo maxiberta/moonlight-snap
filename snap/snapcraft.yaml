@@ -1,7 +1,7 @@
 name: moonlight
 base: core18
 version: master
-version-script: git -C parts/moonlight-qt/build/ describe --tags
+version-script: git -C parts/moonlight-qt/build/ describe --tags --long | sed "s/^v//"
 adopt-info: moonlight-qt
 description: |
   Moonlight can stream games and other applications from a PC with an NVIDIA GeForce GTX 600-series or higher GPU and GeForce Experience installed.
