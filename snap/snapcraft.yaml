@@ -1,5 +1,6 @@
 name: moonlight
 base: core18
+title: Moonlight
 version: master
 version-script: git -C parts/moonlight-qt/build/ describe --tags --long | sed "s/^v//"
 adopt-info: moonlight-qt
