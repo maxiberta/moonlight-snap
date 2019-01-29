@@ -1,11 +1,13 @@
 <h1 align="center">
-  <a href="https://moonlight-stream.org/"><img src="https://moonlight-stream.org/images/manifest/icons-144.png" alt="moonlight"></a>
-  <br />
-  Moonlight
+  <a href="https://moonlight-stream.org/">
+    <img src="https://moonlight-stream.org/images/manifest/icons-144.png" alt="moonlight">
+    <br />
+    Moonlight snap
+  </a>
 </h1>
 
 <p align="center">
-  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt"><code>Moonlight</code></a></b>, <i>an open-source <a href="https://www.nvidia.com/en-us/shield/games/gamestream/">NVIDIA GameStream</a> client</i>.
+  <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt"><code>moonlight-qt</code></a></b>, <i>an open-source <a href="https://www.nvidia.com/en-us/shield/games/gamestream/">NVIDIA GameStream</a> client</i>.
   <br/>
   It works on Ubuntu, Fedora, Debian, and other major Linux distributions.
 </p>
@@ -34,12 +36,8 @@ Or, if you're feeling adventurous, try the in-progress _next release_ from the `
 
 ## The Snapcrafters
 
-| [![maxiberta](https://avatars2.githubusercontent.com/u/381336?s=128&v=4)](https://github.com/maxiberta/) |
-| :---: |
-| [maxiberta](https://github.com/maxiberta/) |
+[maxiberta](https://github.com/maxiberta/)
 
 ## Upstream
 
-| [![moonlight-stream](https://avatars0.githubusercontent.com/u/6118379?s=200&v=4)](https://github.com/moonlight-stream) |
-| :---: |
-| [moonlight-stream](https://github.com/moonlight-stream) |
+[moonlight-stream](https://github.com/moonlight-stream)
