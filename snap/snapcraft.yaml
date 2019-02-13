@@ -56,6 +56,7 @@ parts:
       - libsdl2-dev
       - qtdeclarative5-dev
       - libssl-dev
+      - libsdl2-ttf-dev
     stage-packages:
       - qml-module-qtquick2
       - qml-module-qtquick-controls
@@ -90,6 +91,7 @@ parts:
       - libpulse0
       - libqt5svg5
       - libsdl2-2.0-0
+      - libsdl2-ttf-2.0-0
       - libselinux1
       - libsndfile1
       - libsndio6.1
