@@ -49,14 +49,11 @@ parts:
       - qtbase5-dev
       - qtquickcontrols2-5-dev
       - libqt5svg5-dev
-      - qtmultimedia5-dev
       - libgl1-mesa-dev
       - libegl1-mesa-dev
       - libxkbcommon-dev
       - wayland-protocols
       - libopus-dev
-      - libavcodec-dev
-      - libavutil-dev
       - libva-dev
       - libvdpau-dev
       - libsdl2-dev
@@ -65,9 +62,7 @@ parts:
       - libsdl2-ttf-dev
     stage-packages:
       - qml-module-qtquick2
-      - qml-module-qtquick-controls
       - qml-module-qtquick-controls2
-      - qml-module-qtquick-dialogs
       - qml-module-qtquick-layouts
       - qml-module-qtquick-window2
       - mesa-va-drivers
