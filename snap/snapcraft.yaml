@@ -120,6 +120,11 @@ parts:
       - desktop-qt5
       - ffmpeg
 
+  ffnvcodec:
+    plugin: make
+    source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+    source-branch: sdk/8.1
+
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
@@ -131,17 +136,21 @@ parts:
       - --disable-static
       - --disable-all
       - --enable-avcodec
+      - --enable-nvdec
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-hwaccel=h264_vaapi
       - --enable-hwaccel=hevc_vaapi
       - --enable-hwaccel=h264_vdpau
       - --enable-hwaccel=hevc_vdpau
+      - --enable-hwaccel=h264_nvdec
+      - --enable-hwaccel=hevc_nvdec
     build-packages:
       - libva-dev
       - libvdpau-dev
       - libx265-dev
       - nasm
+    after: [ffnvcodec]
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
