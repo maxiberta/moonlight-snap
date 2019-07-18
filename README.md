@@ -1,10 +1,4 @@
-<h1 align="center">
-  <a href="https://moonlight-stream.org/">
-    <img src="https://moonlight-stream.org/images/manifest/icons-144.png" alt="moonlight">
-    <br />
-    Moonlight snap
-  </a>
-</h1>
+[![Moonlight](https://snapcraft.io/moonlight/badge.svg)](https://snapcraft.io/moonlight)
 
 <p align="center">
   <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt"><code>moonlight-qt</code></a></b>, <i>an open-source <a href="https://www.nvidia.com/en-us/shield/games/gamestream/">NVIDIA GameStream</a> client</i>.
