@@ -65,6 +65,7 @@ parts:
       - qml-module-qtquick-controls2
       - qml-module-qtquick-layouts
       - qml-module-qtquick-window2
+      - qtwayland5
       - mesa-va-drivers
       - mesa-vdpau-drivers
       - libvdpau-va-gl1
