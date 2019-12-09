@@ -129,7 +129,7 @@ parts:
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-omx
-      - --enable-mmal
+      #- --enable-mmal
     build-packages:
       - libva-dev
       - libx265-dev
