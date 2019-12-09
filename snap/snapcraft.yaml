@@ -31,6 +31,9 @@ apps:
   vdpauinfo:
     command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/vdpauinfo
     plugs: *plugs
+  glxinfo:
+    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/glxinfo
+    plugs: *plugs
 
 parts:
   va-wrapper:
