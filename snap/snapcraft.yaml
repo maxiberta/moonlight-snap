@@ -1,12 +1,9 @@
 name: moonlight
 base: core18
-title: Moonlight
-version: stable
 version-script: git -C parts/moonlight-qt/build/ describe --tags | sed "s/^v//"
 adopt-info: moonlight-qt
 grade: stable
 confinement: strict
-icon: moonlight.png
 license: GPL-3.0+
 
 apps:
