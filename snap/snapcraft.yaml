@@ -145,9 +145,3 @@ parts:
     source-branch: stable
     source-subdir: qt
     plugin: make
-
-  fix-icon:
-    plugin: nil
-    override-build:
-      sed -i 's|Icon=moonlight|Icon=/usr/share/icons/hicolor/scalable/apps/moonlight.svg|' $SNAPCRAFT_STAGE/usr/share/applications/com.moonlight_stream.Moonlight.desktop
-    after: [moonlight-qt]
