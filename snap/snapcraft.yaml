@@ -11,15 +11,14 @@ apps:
     command: moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
+      - audio-playback
       - desktop
       - desktop-legacy
       - home
       - joystick
       - network
       - opengl
-      - pulseaudio
       - screen-inhibit-control
-      - unity7
       - wayland
       - x11
 
