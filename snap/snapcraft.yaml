@@ -7,7 +7,8 @@ license: GPL-3.0+
 
 apps:
   moonlight:
-    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/moonlight
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
       - desktop
@@ -22,13 +23,16 @@ apps:
       - wayland
       - x11
   vainfo:
-    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/vainfo
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: vainfo
     plugs: *plugs
   vdpauinfo:
-    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/vdpauinfo
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: vdpauinfo
     plugs: *plugs
   glxinfo:
-    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/glxinfo
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: glxinfo
     plugs: *plugs
 
 parts:
