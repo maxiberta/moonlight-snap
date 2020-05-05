@@ -7,7 +7,8 @@ license: GPL-3.0+
 
 apps:
   moonlight:
-    command: desktop-launch $SNAP/va-wrapper $SNAP/usr/bin/moonlight
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
       - desktop
