@@ -1,6 +1,5 @@
 name: moonlight
 base: core18
-version-script: git -C parts/moonlight-qt/build/ describe --tags --long | sed "s/^v//"
 adopt-info: moonlight-qt
 grade: devel
 confinement: strict
@@ -45,6 +44,9 @@ parts:
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    override-build: |
+      snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
+      snapcraftctl build
     build-packages:
       - qtbase5-dev
       - qtquickcontrols2-5-dev
