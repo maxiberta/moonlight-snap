@@ -84,39 +84,23 @@ parts:
       - libvdpau1
       - libasound2
       - libasyncns0
-      - libblkid1
       - libflac8
-      - libgcc1
-      - libgcrypt20
-      - libgpg-error0
-      - liblz4-1
-      - liblzma5
-      - libmount1
       - libogg0
       - libopus0
-      - libpcre3
       - libpulse0
       - libqt5svg5
+      - libqt5widgets5
       - libsdl2-2.0-0
       - libsdl2-ttf-2.0-0
-      - libselinux1
       - libsndfile1
       - libsndio6.1
-      - libstdc++6
-      - libsystemd0
-      - libtinfo5
-      - libudev1
-      - libuuid1
       - libvorbis0a
       - libvorbisenc2
-      - libwayland-cursor0
-      - libwayland-egl1-mesa
-      - libwrap0
       - libxcursor1
       - libxinerama1
       - libxrandr2
+      - libxrender1
       - libxss1
-      - zlib1g
     after:
       - desktop-qt5
       - ffmpeg
@@ -151,6 +135,18 @@ parts:
       - libvdpau-dev
       - libx265-dev
       - nasm
+    stage-packages:
+      - libdrm2
+      - libva-drm2
+      - libva-x11-2
+      - libva2
+      - libvdpau1
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
     after: [ffnvcodec]
 
   desktop-qt5:
