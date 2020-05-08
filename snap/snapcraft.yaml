@@ -41,15 +41,18 @@ parts:
     stage-packages: [mesa-utils, vainfo, vdpauinfo]
 
   moonlight-qt:
-    plugin: qmake
-    qt-version: qt5
-    options: [PREFIX=/usr]
+    plugin: make
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-build: |
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
-      snapcraftctl build
+      qmake \
+        INCLUDEPATH+={$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}/usr/include \
+        LIBS+=-L{$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}{/usr,}/lib{/$SNAPCRAFT_ARCH_TRIPLET,} \
+        PREFIX=/usr
+      make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
+      make install INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL
     build-packages:
       - qtbase5-dev
       - qtquickcontrols2-5-dev
