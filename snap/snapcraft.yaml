@@ -8,7 +8,7 @@ license: GPL-3.0+
 apps:
   moonlight:
     command-chain: [bin/desktop-launch, va-wrapper]
-    command: moonlight
+    command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
       - audio-playback
@@ -23,15 +23,15 @@ apps:
       - x11
   vainfo:
     command-chain: [bin/desktop-launch, va-wrapper]
-    command: vainfo
+    command: usr/bin/vainfo
     plugs: *plugs
   vdpauinfo:
     command-chain: [bin/desktop-launch, va-wrapper]
-    command: vdpauinfo
+    command: usr/bin/vdpauinfo
     plugs: *plugs
   glxinfo:
     command-chain: [bin/desktop-launch, va-wrapper]
-    command: glxinfo
+    command: usr/bin/glxinfo
     plugs: *plugs
 
 parts:
