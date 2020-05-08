@@ -1,5 +1,5 @@
 name: moonlight
-base: core18
+base: core20
 adopt-info: moonlight-qt
 grade: devel
 confinement: strict
@@ -114,7 +114,7 @@ parts:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
     source-branch: master
-    configflags:
+    autotools-configure-parameters:
       - --prefix=/usr
       - --enable-pic
       - --enable-shared
