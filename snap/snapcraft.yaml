@@ -155,6 +155,17 @@ parts:
     source-branch: master
     source-subdir: qt
     plugin: make
+    after: [kde-neon-ppa]
+
+  kde-neon-ppa:
+    plugin: nil
+    override-pull: |
+      echo "deb http://archive.neon.kde.org/release bionic main" | tee /etc/apt/sources.list.d/kde-neon.list
+      apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E6D4736255751E5D
+      apt update
+      apt upgrade -yy
+    build-packages:
+      - dirmngr
 
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
