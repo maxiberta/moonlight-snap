@@ -1,5 +1,5 @@
 name: moonlight
-base: core20
+base: core18
 adopt-info: moonlight-qt
 grade: devel
 confinement: strict
@@ -41,18 +41,15 @@ parts:
     stage-packages: [mesa-utils, vainfo, vdpauinfo]
 
   moonlight-qt:
-    plugin: make
+    plugin: qmake
+    qt-version: qt5
+    options: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-build: |
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
-      qmake \
-        INCLUDEPATH+={$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}/usr/include \
-        LIBS+=-L{$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}{/usr,}/lib{/$SNAPCRAFT_ARCH_TRIPLET,} \
-        PREFIX=/usr
-      make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
-      make install INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL
+      snapcraftctl build
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
@@ -65,6 +62,7 @@ parts:
       - libva-dev
       - libvdpau-dev
       - libxkbcommon-dev
+      - qt5-default
       - qt5-qmake
       - qtbase5-dev
       - qtdeclarative5-dev
@@ -84,7 +82,7 @@ parts:
       - libsdl2-2.0-0
       - libsdl2-ttf-2.0-0
       - libsndfile1
-      - libsndio7.0
+      - libsndio6.1
       - libva-drm2
       - libva-wayland2
       - libva-x11-2
@@ -117,7 +115,7 @@ parts:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
     source-branch: master
-    autotools-configure-parameters:
+    configflags:
       - --prefix=/usr
       - --enable-pic
       - --enable-shared
@@ -169,9 +167,9 @@ parts:
       - va-wrapper
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
-      - core20
+      - core18
     override-prime: |
       set -eux
-      for snap in "core20"; do  # List all content-snaps and base snaps you're using here
+      for snap in "core18"; do  # List all content-snaps and base snaps you're using here
           cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
       done
