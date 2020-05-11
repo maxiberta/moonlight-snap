@@ -111,7 +111,7 @@ parts:
   ffnvcodec:
     plugin: make
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-    source-branch: sdk/9.0
+    source-branch: sdk/8.1
 
   ffmpeg:
     plugin: autotools
