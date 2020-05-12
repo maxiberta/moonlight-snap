@@ -164,8 +164,6 @@ parts:
       apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E6D4736255751E5D
       apt update
       apt upgrade -yy
-    build-packages:
-      - dirmngr
 
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
