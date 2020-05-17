@@ -39,38 +39,25 @@ parts:
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
       snapcraftctl build
     build-packages:
-      - qtbase5-dev
-      - qtquickcontrols2-5-dev
-      - libqt5svg5-dev
-      - libgl1-mesa-dev
       - libegl1-mesa-dev
-      - libxkbcommon-dev
-      - wayland-protocols
+      - libgl1-mesa-dev
       - libopus-dev
+      - libqt5svg5-dev
+      - libsdl2-dev
+      - libsdl2-ttf-dev
+      - libssl-dev
       - libva-dev
       - libvdpau-dev
-      - libsdl2-dev
+      - libxkbcommon-dev
+      - qtbase5-dev
       - qtdeclarative5-dev
-      - libssl-dev
-      - libsdl2-ttf-dev
+      - qtquickcontrols2-5-dev
+      - wayland-protocols
     stage-packages:
-      - qml-module-qtquick2
-      - qml-module-qtquick-controls2
-      - qml-module-qtquick-layouts
-      - qml-module-qtquick-window2
-      - mesa-va-drivers
-      - mesa-vdpau-drivers
-      - libvdpau-va-gl1
       - i965-va-driver
-      - vdpau-va-driver
-      - va-driver-all
-      - libdrm2
-      - libva-drm2
-      - libva-x11-2
-      - libva-wayland2
-      - libvdpau1
       - libasound2
       - libasyncns0
+      - libdrm2
       - libflac8
       - libogg0
       - libopus0
@@ -81,6 +68,11 @@ parts:
       - libsdl2-ttf-2.0-0
       - libsndfile1
       - libsndio6.1
+      - libva-drm2
+      - libva-wayland2
+      - libva-x11-2
+      - libvdpau-va-gl1
+      - libvdpau1
       - libvorbis0a
       - libvorbisenc2
       - libxcursor1
@@ -88,6 +80,15 @@ parts:
       - libxrandr2
       - libxrender1
       - libxss1
+      - mesa-va-drivers
+      - mesa-vdpau-drivers
+      - qml-module-qtquick-controls2
+      - qml-module-qtquick-layouts
+      - qml-module-qtquick-window2
+      - qml-module-qtquick2
+      - qtwayland5
+      - va-driver-all
+      - vdpau-va-driver
     after:
       - desktop-qt5
       - ffmpeg
