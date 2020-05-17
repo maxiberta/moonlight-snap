@@ -1,11 +1,3 @@
-<h1 align="center">
-  <a href="https://moonlight-stream.org/">
-    <img src="https://moonlight-stream.org/images/manifest/icons-144.png" alt="moonlight">
-    <br />
-    Moonlight snap
-  </a>
-</h1>
-
 <p align="center">
   <b>This is the snap for <a href="https://github.com/moonlight-stream/moonlight-qt"><code>moonlight-qt</code></a></b>, <i>an open-source <a href="https://www.nvidia.com/en-us/shield/games/gamestream/">NVIDIA GameStream</a> client</i>.
   <br/>
@@ -13,7 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://snapcraft.io/moonlight"><img src="https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-black.png" alt="Get it from the Snap Store"></a>
+  <a href="https://snapcraft.io/moonlight">
+    <img alt="Moonlight" src="https://snapcraft.io/moonlight/badge.svg" />
+  </a>
 </p>
 
 <!-- Uncomment and modify this when you are provided a build status badge
