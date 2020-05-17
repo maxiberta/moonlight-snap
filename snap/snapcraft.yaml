@@ -17,6 +17,7 @@ apps:
       - home
       - joystick
       - network
+      - network-observe
       - opengl
       - screen-inhibit-control
       - wayland
