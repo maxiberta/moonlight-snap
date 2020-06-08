@@ -74,6 +74,7 @@ parts:
       - wayland-protocols
     stage-packages:
       - i965-va-driver
+      - intel-media-va-driver-non-free
       - libasound2
       - libasyncns0
       - libdrm2
