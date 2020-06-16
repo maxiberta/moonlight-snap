@@ -30,6 +30,10 @@ apps:
     command-chain: [bin/desktop-launch, va-wrapper]
     command: usr/bin/vdpauinfo
     plugs: *plugs
+  eglinfo:
+    command-chain: [bin/desktop-launch, va-wrapper]
+    command: usr/bin/eglinfo
+    plugs: *plugs
   glxinfo:
     command-chain: [bin/desktop-launch, va-wrapper]
     command: usr/bin/glxinfo
@@ -39,7 +43,7 @@ parts:
   va-wrapper:
     plugin: dump
     source: snap/local/
-    stage-packages: [mesa-utils, vainfo, vdpauinfo]
+    stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo]
 
   moonlight-qt:
     plugin: make
