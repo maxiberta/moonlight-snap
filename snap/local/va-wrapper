@@ -17,6 +17,7 @@ VENDOR=$(glxinfo | grep "OpenGL vendor")
 
 export VDPAU_DRIVER_PATH="$SNAP/usr/lib/$ARCH/vdpau"
 export LIBVA_DRIVERS_PATH="$SNAP/usr/lib/$ARCH/dri"
+export __EGL_VENDOR_LIBRARY_DIRS="$__EGL_VENDOR_LIBRARY_DIRS:$SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d"
 
 if [[ $VENDOR == *"NVIDIA"* ]]; then
   export VDPAU_DRIVER_PATH="/var/lib/snapd/lib/gl/vdpau"
