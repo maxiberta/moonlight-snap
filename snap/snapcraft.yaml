@@ -39,38 +39,28 @@ parts:
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
       snapcraftctl build
     build-packages:
-      - qtbase5-dev
-      - qtquickcontrols2-5-dev
-      - libqt5svg5-dev
-      - libgl1-mesa-dev
       - libegl1-mesa-dev
-      - libxkbcommon-dev
-      - wayland-protocols
+      - libgl1-mesa-dev
       - libopus-dev
+      - libqt5svg5-dev
+      - libsdl2-dev
+      - libsdl2-ttf-dev
+      - libssl-dev
+      - libavcodec-dev
       - libva-dev
       - libvdpau-dev
-      - libsdl2-dev
+      - libxkbcommon-dev
+      - qt5-default
+      - qt5-qmake
+      - qtbase5-dev
       - qtdeclarative5-dev
-      - libssl-dev
-      - libsdl2-ttf-dev
+      - qtquickcontrols2-5-dev
+      - wayland-protocols
     stage-packages:
-      - qml-module-qtquick2
-      - qml-module-qtquick-controls2
-      - qml-module-qtquick-layouts
-      - qml-module-qtquick-window2
-      - mesa-va-drivers
-      - mesa-vdpau-drivers
-      - libvdpau-va-gl1
       - i965-va-driver
-      - vdpau-va-driver
-      - va-driver-all
-      - libdrm2
-      - libva-drm2
-      - libva-x11-2
-      - libva-wayland2
-      - libvdpau1
       - libasound2
       - libasyncns0
+      - libdrm2
       - libflac8
       - libogg0
       - libopus0
@@ -81,6 +71,10 @@ parts:
       - libsdl2-ttf-2.0-0
       - libsndfile1
       - libsndio6.1
+      - libva-drm2
+      - libva-wayland2
+      - libva-x11-2
+      - libvdpau1
       - libvorbis0a
       - libvorbisenc2
       - libxcursor1
@@ -88,6 +82,14 @@ parts:
       - libxrandr2
       - libxrender1
       - libxss1
+      - mesa-va-drivers
+      - mesa-vdpau-drivers
+      - qml-module-qtquick-controls2
+      - qml-module-qtquick-layouts
+      - qml-module-qtquick-window2
+      - qml-module-qtquick2
+      - qtwayland5
+      - va-driver-all
     after:
       - desktop-qt5
       - ffmpeg
@@ -100,7 +102,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n4.2.2
+    source-tag: n4.3
     configflags:
       - --prefix=/usr
       - --enable-pic
@@ -138,9 +140,20 @@ parts:
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-branch: stable
+    source-branch: master
     source-subdir: qt
     plugin: make
+    after: [kde-neon-ppa]
+
+  kde-neon-ppa:
+    plugin: nil
+    override-pull: |
+      echo "deb http://archive.neon.kde.org/release bionic main" | tee /etc/apt/sources.list.d/kde-neon.list
+      apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E6D4736255751E5D
+      apt update
+      apt upgrade -yy
+    build-packages:
+      - dirmngr
 
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
@@ -157,5 +170,10 @@ parts:
     override-prime: |
       set -eux
       for snap in "core18"; do  # List all content-snaps and base snaps you're using here
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
       done
+      for CRUFT in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
