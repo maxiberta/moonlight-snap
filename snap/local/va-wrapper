@@ -23,8 +23,6 @@ if [[ $VENDOR == *"NVIDIA"* ]]; then
   export VDPAU_DRIVER_PATH="/var/lib/snapd/lib/gl/vdpau"
   # Prevent picking intel vaapi over nvidia vdpau (eg. on PRIME systems)
   unset LIBVA_DRIVERS_PATH
-elif [[ $VENDOR == *"X.Org"* ]]; then
-  export VDPAU_DRIVER_PATH="/usr/lib/$ARCH/vdpau/"
 fi
 
 exec "$@"
