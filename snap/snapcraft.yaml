@@ -1,5 +1,5 @@
 name: moonlight
-base: core18
+base: core20
 adopt-info: moonlight-qt
 grade: stable
 confinement: strict
@@ -29,15 +29,18 @@ parts:
     stage-packages: [mesa-utils]
 
   moonlight-qt:
-    plugin: qmake
-    qt-version: qt5
-    options: [PREFIX=/usr]
+    plugin: make
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-tag: v2.1.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-build: |
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
-      snapcraftctl build
+      qmake \
+        INCLUDEPATH+={$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}/usr/include \
+        LIBS+=-L{$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}{/usr,}/lib{/$SNAPCRAFT_ARCH_TRIPLET,} \
+        PREFIX=/usr
+      make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
+      make install INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
@@ -46,15 +49,19 @@ parts:
       - libsdl2-dev
       - libsdl2-ttf-dev
       - libssl-dev
+      - libavcodec-dev
       - libva-dev
       - libvdpau-dev
       - libxkbcommon-dev
+      - qt5-default
+      - qt5-qmake
       - qtbase5-dev
       - qtdeclarative5-dev
       - qtquickcontrols2-5-dev
       - wayland-protocols
     stage-packages:
       - i965-va-driver
+      - intel-media-va-driver-non-free
       - libasound2
       - libasyncns0
       - libdrm2
@@ -67,7 +74,7 @@ parts:
       - libsdl2-2.0-0
       - libsdl2-ttf-2.0-0
       - libsndfile1
-      - libsndio6.1
+      - libsndio7.0
       - libva-drm2
       - libva-wayland2
       - libva-x11-2
@@ -88,7 +95,6 @@ parts:
       - qml-module-qtquick2
       - qtwayland5
       - va-driver-all
-      - vdpau-va-driver
     after:
       - desktop-qt5
       - ffmpeg
@@ -102,7 +108,7 @@ parts:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
     source-tag: n4.3
-    configflags:
+    autotools-configure-parameters:
       - --prefix=/usr
       - --enable-pic
       - --enable-shared
@@ -154,9 +160,14 @@ parts:
       - va-wrapper
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
-      - core18
+      - core20
     override-prime: |
       set -eux
-      for snap in "core18"; do  # List all content-snaps and base snaps you're using here
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+      for snap in "core20"; do  # List all content-snaps and base snaps you're using here
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
       done
+      for CRUFT in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
