@@ -102,7 +102,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n4.3
+    source-tag: n4.3.1
     configflags:
       - --prefix=/usr
       - --enable-pic
