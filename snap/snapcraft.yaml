@@ -31,7 +31,7 @@ parts:
   moonlight-qt:
     plugin: make
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v2.1.0
+    source-tag: v2.2.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-build: |
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
