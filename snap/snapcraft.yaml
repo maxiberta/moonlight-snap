@@ -4,6 +4,7 @@ adopt-info: moonlight-qt
 grade: devel
 confinement: strict
 license: GPL-3.0+
+icon: moonlight.svg
 
 apps:
   moonlight:
