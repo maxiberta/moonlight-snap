@@ -5,6 +5,7 @@ grade: stable
 confinement: strict
 license: GPL-3.0+
 icon: moonlight.svg
+compression: lzo
 
 apps:
   moonlight:
