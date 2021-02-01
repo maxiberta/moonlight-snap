@@ -173,6 +173,7 @@ parts:
       - --enable-video-wayland
       - --disable-wayland-shared
       - --enable-video-mir
+      - --enable-video-kmsdrm
     build-packages:
       - fcitx-bin
       - fcitx-libs-dev
