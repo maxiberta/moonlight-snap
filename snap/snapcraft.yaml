@@ -10,7 +10,7 @@ compression: lzo
 apps:
   moonlight:
     command-chain: [bin/desktop-launch, va-wrapper]
-    command: usr/bin/moonlight
+    command: usr/local/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
       - audio-playback
@@ -47,18 +47,13 @@ parts:
     stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo]
 
   moonlight-qt:
-    plugin: make
+    plugin: qmake
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
-    parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
-    override-build: |
+    parse-info: [usr/local/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    override-pull: |
+      snapcraftctl pull
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
-      qmake \
-        INCLUDEPATH+={$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}/usr/include \
-        LIBS+=-L{$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}{/usr,}/lib{/$SNAPCRAFT_ARCH_TRIPLET,} \
-        PREFIX=/usr
-      make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
-      make install INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
