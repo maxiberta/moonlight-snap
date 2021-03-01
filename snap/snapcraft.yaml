@@ -53,15 +53,14 @@ parts:
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
-    override-build: |
+    override-pull: |
+      snapcraftctl pull
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
-      snapcraftctl build
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
       - libopus-dev
       - libqt5svg5-dev
-      - libsdl2-ttf-dev
       - libssl-dev
       - libavcodec-dev
       - libva-dev
@@ -84,7 +83,6 @@ parts:
       - libpulse0
       - libqt5svg5
       - libqt5widgets5
-      - libsdl2-ttf-2.0-0
       - libsndfile1
       - libsndio6.1
       - libva-drm2
@@ -109,12 +107,14 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
-      - sdl2
+      - sdl
+      - sdl-ttf
 
   ffnvcodec:
     plugin: make
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
     source-branch: sdk/8.1
+    make-parameters: [PREFIX=/usr]
 
   ffmpeg:
     plugin: autotools
@@ -153,121 +153,78 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
-    after: [ffnvcodec]
+    after:
+      - ffnvcodec
+      - sdl
 
-  sdl2:
+  sdl:
     plugin: autotools
-    source: https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+    source: https://github.com/libsdl-org/SDL.git
+    source-branch: main
     configflags:
-      - --disable-rpath
+      - --prefix=/usr
       - --enable-sdl-dlopen
-      - --disable-nas
-      - --disable-esd
       - --disable-arts
-      - --disable-alsa-shared
-      - --disable-pulseaudio-shared
-      - --enable-ibus
-      - --disable-x11-shared
-      - --disable-video-directfb
-      - --enable-video-opengles
-      - --enable-video-wayland
-      - --disable-wayland-shared
-      - --enable-video-mir
+      - --disable-esd
+      - --disable-nas
+      - --disable-alsa
+      - --disable-oss
+      - --disable-sndio
+      - --disable-libudev
       - --enable-video-kmsdrm
+      - --enable-video-wayland
+      - --enable-wayland-shared=no
+      - --disable-rpath
     build-packages:
-      - fcitx-bin
-      - fcitx-libs-dev
-      - gir1.2-fcitx-1.0
       - libasound2-dev
-      - libboost-filesystem1.65.1
-      - libcapnp-0.6.1
-      - libclang1-6.0
       - libdbus-1-dev
       - libdrm-dev
       - libegl1-mesa-dev
-      - libfcitx-core0
-      - libfcitx-qt0
-      - libfile-stripnondeterminism-perl
-      - libgettextpo0
+      - libgbm-dev
       - libgl1-mesa-dev
-      - libgles1
       - libgles2-mesa-dev
-      - libglib2.0-dev
-      - libglib2.0-dev-bin
       - libglu1-mesa-dev
-      - libglvnd-core-dev
-      - libglvnd-dev
       - libibus-1.0-dev
-      - libice-dev
-      - libllvm6.0
-      - libmirclient-dev
-      - libmirclient9
-      - libmircommon-dev
-      - libmircommon7
-      - libmircookie-dev
-      - libmircookie2
-      - libmircore-dev
-      - libmircore1
-      - libmirprotobuf3
-      - libopengl0
-      - libpcre16-3
-      - libpcre3-dev
-      - libpcre32-3
-      - libpcrecpp0v5
-      - libprotobuf-dev
-      - libpthread-stubs0-dev
       - libpulse-dev
-      - libsamplerate0-dev
-      - libsm-dev
       - libsndio-dev
-      - libtool
-      - libudev-dev
       - libvulkan-dev
-      - libwayland-bin
       - libwayland-dev
       - libx11-dev
-      - libx11-xcb-dev
-      - libxau-dev
-      - libxcb-dri2-0-dev
-      - libxcb-dri3-dev
-      - libxcb-glx0-dev
-      - libxcb-present-dev
-      - libxcb-randr0-dev
-      - libxcb-render0-dev
-      - libxcb-shape0-dev
-      - libxcb-sync-dev
-      - libxcb-xfixes0-dev
-      - libxcb1-dev
       - libxcursor-dev
-      - libxdamage-dev
-      - libxdmcp-dev
       - libxext-dev
-      - libxfixes-dev
       - libxi-dev
       - libxinerama-dev
       - libxkbcommon-dev
       - libxrandr-dev
-      - libxrender-dev
-      - libxshmfence-dev
       - libxss-dev
       - libxt-dev
       - libxv-dev
       - libxxf86vm-dev
-      - mesa-common-dev
+      - pkg-config
+      - libsamplerate0-dev
       - wayland-protocols
-      - x11proto-core-dev
-      - x11proto-damage-dev
-      - x11proto-dev
-      - x11proto-fixes-dev
-      - x11proto-input-dev
-      - x11proto-randr-dev
-      - x11proto-scrnsaver-dev
-      - x11proto-xext-dev
-      - x11proto-xf86vidmode-dev
-      - x11proto-xinerama-dev
-      - xorg-sgml-doctools
-      - xtrans-dev
-      - zlib1g-dev
+    stage-packages:
+      - libwayland-cursor0
+      - libwayland-egl1
+      - libxkbcommon0
+
+  sdl-ttf:
+    plugin: autotools
+    source: https://github.com/libsdl-org/SDL_ttf.git
+    source-branch: main
+    override-build: |
+      ./autogen.sh
+      snapcraftctl build
+    configflags:
+      - --prefix=/usr
+    build-packages:
+      - libfreetype6-dev
+      - pkg-config
+    stage-packages:
+      - libfreetype6
+      - libpng16-16
+    after:
+      - sdl
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
