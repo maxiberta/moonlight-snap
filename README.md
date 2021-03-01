@@ -24,7 +24,7 @@
 
 That'll install the latest _stable_ release of `moonlight`.
 
-Or, if you're feeling adventurous, try the in-progress _next release_ from the `edge` channel:
+Or, if you're feeling adventurous, try the [daily Launchpad.net builds](https://code.launchpad.net/~maxiberta/+snap/moonlight-edge-amd64) available at the `edge` channel:
 
     sudo snap install moonlight --edge
 
