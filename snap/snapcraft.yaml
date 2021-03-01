@@ -31,25 +31,19 @@ parts:
     stage-packages: [mesa-utils]
 
   moonlight-qt:
-    plugin: make
+    plugin: qmake
+    qmake-parameters: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-tag: v3.0.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
-    override-build: |
+    override-pull: |
+      snapcraftctl pull
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
-      qmake \
-        INCLUDEPATH+={$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}/usr/include \
-        LIBS+=-L{$SNAPCRAFT_PART_INSTALL,$SNAPCRAFT_STAGE}{/usr,}/lib{/$SNAPCRAFT_ARCH_TRIPLET,} \
-        PREFIX=/usr
-      make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
-      make install INSTALL_ROOT=$SNAPCRAFT_PART_INSTALL
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
       - libopus-dev
       - libqt5svg5-dev
-      - libsdl2-dev
-      - libsdl2-ttf-dev
       - libssl-dev
       - libavcodec-dev
       - libva-dev
@@ -73,8 +67,6 @@ parts:
       - libpulse0
       - libqt5svg5
       - libqt5widgets5
-      - libsdl2-2.0-0
-      - libsdl2-ttf-2.0-0
       - libsndfile1
       - libsndio7.0
       - libva-drm2
@@ -100,11 +92,14 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
+      - sdl
+      - sdl-ttf
 
   ffnvcodec:
     plugin: make
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
     source-branch: sdk/8.1
+    make-parameters: [PREFIX=/usr]
 
   ffmpeg:
     plugin: autotools
@@ -143,7 +138,78 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
-    after: [ffnvcodec]
+    after:
+      - ffnvcodec
+      - sdl
+
+  sdl:
+    plugin: autotools
+    source: https://github.com/libsdl-org/SDL.git
+    source-commit: dfa64eadd38a6a8125290dcf121f1bc285e98dad
+    autotools-configure-parameters:
+      - --prefix=/usr
+      - --enable-sdl-dlopen
+      - --disable-arts
+      - --disable-esd
+      - --disable-nas
+      - --disable-alsa
+      - --disable-oss
+      - --disable-sndio
+      - --disable-libudev
+      - --enable-video-kmsdrm
+      - --enable-video-wayland
+      - --enable-wayland-shared=no
+      - --disable-rpath
+    build-packages:
+      - libasound2-dev
+      - libdbus-1-dev
+      - libdrm-dev
+      - libegl1-mesa-dev
+      - libgbm-dev
+      - libgl1-mesa-dev
+      - libgles2-mesa-dev
+      - libglu1-mesa-dev
+      - libibus-1.0-dev
+      - libpulse-dev
+      - libsndio-dev
+      - libvulkan-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxcursor-dev
+      - libxext-dev
+      - libxi-dev
+      - libxinerama-dev
+      - libxkbcommon-dev
+      - libxrandr-dev
+      - libxss-dev
+      - libxt-dev
+      - libxv-dev
+      - libxxf86vm-dev
+      - pkg-config
+      - libsamplerate0-dev
+      - wayland-protocols
+    stage-packages:
+      - libwayland-cursor0
+      - libwayland-egl1
+      - libxkbcommon0
+
+  sdl-ttf:
+    plugin: autotools
+    source: https://github.com/libsdl-org/SDL_ttf.git
+    source-tag: release-2.0.15
+    override-build: |
+      ./autogen.sh
+      snapcraftctl build
+    autotools-configure-parameters:
+      - --prefix=/usr
+    build-packages:
+      - libfreetype-dev
+      - pkg-config
+    stage-packages:
+      - libfreetype6
+      - libpng16-16
+    after:
+      - sdl
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
