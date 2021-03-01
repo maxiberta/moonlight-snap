@@ -105,21 +105,21 @@ parts:
     source: https://git.ffmpeg.org/ffmpeg.git
     source-tag: n4.3.1
     configflags:
-      - --prefix=/usr
-      - --enable-pic
-      - --enable-shared
-      - --disable-static
       - --disable-all
+      - --disable-static
       - --enable-avcodec
-      - --enable-nvdec
       - --enable-decoder=h264
       - --enable-decoder=hevc
-      - --enable-hwaccel=h264_vaapi
-      - --enable-hwaccel=hevc_vaapi
-      - --enable-hwaccel=h264_vdpau
-      - --enable-hwaccel=hevc_vdpau
       - --enable-hwaccel=h264_nvdec
+      - --enable-hwaccel=h264_vaapi
+      - --enable-hwaccel=h264_vdpau
       - --enable-hwaccel=hevc_nvdec
+      - --enable-hwaccel=hevc_vaapi
+      - --enable-hwaccel=hevc_vdpau
+      - --enable-nvdec
+      - --enable-pic
+      - --enable-shared
+      - --prefix=/usr
     build-packages:
       - libva-dev
       - libvdpau-dev
@@ -147,18 +147,19 @@ parts:
     source-commit: dfa64eadd38a6a8125290dcf121f1bc285e98dad
     configflags:
       - --prefix=/usr
-      - --enable-sdl-dlopen
+      - --disable-alsa
       - --disable-arts
       - --disable-esd
-      - --disable-nas
-      - --disable-alsa
-      - --disable-oss
-      - --disable-sndio
       - --disable-libudev
+      - --disable-nas
+      - --disable-oss
+      - --disable-rpath
+      - --disable-sndio
+      - --disable-static
+      - --enable-sdl-dlopen
       - --enable-video-kmsdrm
       - --enable-video-wayland
       - --enable-wayland-shared=no
-      - --disable-rpath
     build-packages:
       - libasound2-dev
       - libdbus-1-dev
@@ -170,6 +171,7 @@ parts:
       - libglu1-mesa-dev
       - libibus-1.0-dev
       - libpulse-dev
+      - libsamplerate0-dev
       - libsndio-dev
       - libvulkan-dev
       - libwayland-dev
@@ -185,7 +187,6 @@ parts:
       - libxv-dev
       - libxxf86vm-dev
       - pkg-config
-      - libsamplerate0-dev
       - wayland-protocols
     stage-packages:
       - libwayland-cursor0
@@ -200,6 +201,7 @@ parts:
       ./autogen.sh
       snapcraftctl build
     configflags:
+      - --disable-static
       - --prefix=/usr
     build-packages:
       - libfreetype6-dev
