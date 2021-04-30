@@ -9,7 +9,7 @@ compression: lzo
 
 apps:
   moonlight:
-    command-chain: [bin/desktop-launch, va-wrapper]
+    command-chain: [bin/desktop-launch]
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
@@ -25,11 +25,6 @@ apps:
       - x11
 
 parts:
-  va-wrapper:
-    plugin: dump
-    source: snap/local/
-    stage-packages: [mesa-utils]
-
   moonlight-qt:
     plugin: qmake
     qmake-parameters: [PREFIX=/usr]
@@ -227,7 +222,6 @@ parts:
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - moonlight-qt
-      - va-wrapper
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - core20
