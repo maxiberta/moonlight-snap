@@ -54,6 +54,15 @@ parts:
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
+    after:
+      - desktop-qt5
+      - ffmpeg
+      - sdl
+      - sdl-ttf
+      - moonlight-qt-deps
+
+  moonlight-qt-deps:
+    plugin: nil
     build-packages:
       - libegl1-mesa-dev
       - libgl1-mesa-dev
@@ -104,11 +113,6 @@ parts:
       - qml-module-qtquick2
       - qtwayland5
       - va-driver-all
-    after:
-      - desktop-qt5
-      - ffmpeg
-      - sdl
-      - sdl-ttf
 
   ffnvcodec:
     plugin: make
@@ -136,6 +140,13 @@ parts:
       - --enable-pic
       - --enable-shared
       - --prefix=/usr
+    after:
+      - ffnvcodec
+      - sdl
+      - ffmpeg-deps
+
+  ffmpeg-deps:
+    plugin: nil
     build-packages:
       - libva-dev
       - libvdpau-dev
@@ -153,9 +164,6 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
-    after:
-      - ffnvcodec
-      - sdl
 
   sdl:
     plugin: autotools
@@ -176,6 +184,11 @@ parts:
       - --enable-video-kmsdrm
       - --enable-video-wayland
       - --enable-wayland-shared=no
+    after:
+      - sdl-deps
+
+  sdl-deps:
+    plugin: nil
     build-packages:
       - libasound2-dev
       - libdbus-1-dev
@@ -219,14 +232,18 @@ parts:
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
+    after:
+      - sdl
+      - sdl-ttf-deps
+
+  sdl-ttf-deps:
+    plugin: nil
     build-packages:
       - libfreetype-dev
       - pkg-config
     stage-packages:
       - libfreetype6
       - libpng16-16
-    after:
-      - sdl
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
