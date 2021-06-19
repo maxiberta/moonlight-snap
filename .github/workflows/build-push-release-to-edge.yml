@@ -1,0 +1,23 @@
+name: Build, upload & release to EDGE
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: snapcore/action-build@v1.0.8
+        id: build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: snap
+          path: ${{ steps.build.outputs.snap }}
+      - uses: snapcore/action-publish@v1.0.2
+        with:
+          store_login: ${{ secrets.STORE_LOGIN_EDGE }}
+          snap: ${{ steps.build.outputs.snap }}
+          release: edge
