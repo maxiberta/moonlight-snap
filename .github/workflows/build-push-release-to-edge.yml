@@ -12,12 +12,22 @@ jobs:
       - uses: actions/checkout@v2
       - uses: snapcore/action-build@v1.0.8
         id: build
+    outputs:
+      snap: ${{ steps.build.outputs.snap }}
+  upload:
+    runs-on: ubuntu-20.04
+    needs: build
+    steps:
       - uses: actions/upload-artifact@v2
         with:
           name: snap
-          path: ${{ steps.build.outputs.snap }}
+          path: ${{ needs.build.outputs.snap }}
+  release:
+    runs-on: ubuntu-20.04
+    needs: [build, upload]
+    steps:
       - uses: snapcore/action-publish@v1.0.2
         with:
           store_login: ${{ secrets.STORE_LOGIN_EDGE }}
-          snap: ${{ steps.build.outputs.snap }}
+          snap: ${{ needs.build.outputs.snap }}
           release: edge
