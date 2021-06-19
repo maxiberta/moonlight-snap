@@ -10,23 +10,23 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: snapcore/action-build@v1.0.8
+      - uses: snapcore/action-build@v1
         id: build
-    outputs:
-      snap: ${{ steps.build.outputs.snap }}
-  upload:
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
       - uses: actions/upload-artifact@v2
         with:
           name: snap
-          path: ${{ needs.build.outputs.snap }}
-  release:
+          path: ${{ steps.build.outputs.snap }}
+    outputs:
+      snap: ${{ steps.build.outputs.snap }}
+      
+  publish:
     runs-on: ubuntu-20.04
-    needs: [build, upload]
+    needs: build
     steps:
-      - uses: snapcore/action-publish@v1.0.2
+      - uses: actions/download-artifact@v2
+        with:
+          name: snap    
+      - uses: snapcore/action-publish@v1
         with:
           store_login: ${{ secrets.STORE_LOGIN_EDGE }}
           snap: ${{ needs.build.outputs.snap }}
