@@ -1,13 +1,17 @@
 name: EDGE automatic builds
 on:
   push:
-    branches:
-      - master
+    branches: [master]
+  workflow_run:
+    workflows: ["Check upstream activity"]
+    branches: [master]
+    types: [completed]
   workflow_dispatch:
   
 jobs:
   build:
     runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v2
       - uses: snapcore/action-build@v1
