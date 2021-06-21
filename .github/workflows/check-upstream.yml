@@ -1,0 +1,11 @@
+name: Check upstream activity
+on:
+  schedule:
+    - cron: '* * * * *'
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          false
