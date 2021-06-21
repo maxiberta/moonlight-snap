@@ -3,7 +3,7 @@ on:
   push:
     branches: [master]
   schedule:
-    - cron: '42 * * * *'
+    - cron: '0,10,20,30,40,50 * * * *'
   workflow_dispatch:
   
 jobs:
@@ -31,11 +31,3 @@ jobs:
         run: |
           echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
           echo GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME
-      - uses: actions/checkout@v2
-      - uses: snapcore/action-build@v1
-        id: build
-      - uses: snapcore/action-publish@v1
-        with:
-          store_login: ${{ secrets.STORE_LOGIN_EDGE }}
-          snap: ${{ steps.build.outputs.snap }}
-          release: edge
