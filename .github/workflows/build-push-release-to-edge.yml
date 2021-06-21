@@ -7,10 +7,13 @@ on:
   workflow_dispatch:
   
 jobs:
-  latest-commit-datetime:
+  get-latest-commit-datetime:
     runs-on: ubuntu-latest
+    outputs:
+      age: ${{ steps.fetch-latest-commit-datetime.outputs.age }}
     steps:
-      - run: |
+      - id: fetch-latest-commit-datetime
+        run: |
           sudo apt update
           sudo apt install curl dateutils jq
           LAST_COMMIT_DATETIME=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .commit.author.date)
@@ -24,10 +27,10 @@ jobs:
     if: |
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.age < 3600)
+      (github.event_name == 'schedule' && needs.get-latest-commit-datetime.outputs.age < 3600)
     steps:
       - env:
-          SECONDS_SINCE_COMMIT: ${{ needs.latest-commit-datetime.outputs.age }}
+          SECONDS_SINCE_COMMIT: ${{ needs.get-latest-commit-datetime.outputs.age }}
         run: |
           echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
           echo GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME
