@@ -16,17 +16,21 @@ jobs:
           LAST_COMMIT_DATETIME=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .commit.author.date)
           echo LAST_COMMIT_DATETIME=$LAST_COMMIT_DATETIME
           SECONDS_SINCE_COMMIT=$(dateutils.ddiff "$LAST_COMMIT_DATETIME" now -f %S)
-          echo SECONDS_SINCE_COMMIT=$SECONDS_SINCE_COMMIT
+          echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
           echo "::set-output name=age::$SECONDS_SINCE_COMMIT"
   build-and-publish:
     runs-on: ubuntu-20.04
     needs: latest-commit-datetime
     if: |
-      ${{ 
-        github.event_name == 'push'
-        || github.event_name == 'workflow_dispatch'
-      }}
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.age < 3600)
     steps:
+      - env:
+          SECONDS_SINCE_COMMIT: ${{ needs.latest-commit-datetime.outputs.age }}
+        run: |
+          echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
+          echo GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME
       - uses: actions/checkout@v2
       - uses: snapcore/action-build@v1
         id: build
