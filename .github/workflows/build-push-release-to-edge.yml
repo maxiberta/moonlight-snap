@@ -23,9 +23,9 @@ jobs:
     needs: latest-commit-datetime
     if: |
       ${{ 
-        github.event_name == 'push' ||
-        github.event_name == 'workflow_dispatch' ||
-        (github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.age < 3600)
+        github.event_name == 'push'
+        || github.event_name == 'workflow_dispatch'
+#        || (github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.age < 3600)
       }}
     steps:
       - uses: actions/checkout@v2
