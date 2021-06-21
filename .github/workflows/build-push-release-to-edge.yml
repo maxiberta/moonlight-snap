@@ -17,7 +17,7 @@ jobs:
           echo LAST_COMMIT_DATETIME=$LAST_COMMIT_DATETIME
           SECONDS_SINCE_COMMIT=$(dateutils.ddiff "$LAST_COMMIT_DATETIME" now -f %S)
           echo SECONDS_SINCE_COMMIT=$SECONDS_SINCE_COMMIT
-          echo "::set-output name=seconds_since::$SECONDS_SINCE_COMMIT"
+          echo "::set-output name=age::$SECONDS_SINCE_COMMIT"
   build-and-publish:
     runs-on: ubuntu-20.04
     needs: latest-commit-datetime
@@ -25,7 +25,7 @@ jobs:
       ${{ 
         github.event_name == 'push' ||
         github.event_name == 'workflow_dispatch' ||
-        github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.seconds_since < 3600
+        (github.event_name == 'schedule' && needs.latest-commit-datetime.outputs.age < 3600)
       }}
     steps:
       - uses: actions/checkout@v2
