@@ -10,7 +10,7 @@ jobs:
     steps:
       - run: |
           sudo apt update
-          sudo apt install dateutils
+          sudo apt install curl dateutils jq
           LAST_COMMIT_DATETIME=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .commit.author.date)
           SECONDS_SINCE_COMMIT=$(dateutils.ddiff "$LAST_COMMIT_DATETIME" now -f %S)
           [[ "$SECONDS_SINCE_COMMIT" < 3600 ]]
