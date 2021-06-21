@@ -23,7 +23,7 @@ jobs:
           echo "::set-output name=age::$SECONDS_SINCE_COMMIT"
   build-and-publish:
     runs-on: ubuntu-20.04
-    needs: latest-commit-datetime
+    needs: get-latest-commit-datetime
     if: |
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
