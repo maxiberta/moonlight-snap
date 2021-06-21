@@ -3,7 +3,7 @@ on:
   push:
     branches: [master]
   schedule:
-    - cron: '0,10,20,30,40,50 * * * *'
+    - cron: '55 * * * *'
   workflow_dispatch:
   
 jobs:
@@ -21,6 +21,7 @@ jobs:
           SECONDS_SINCE_COMMIT=$(dateutils.ddiff "$LAST_COMMIT_DATETIME" now -f %S)
           echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
           echo "::set-output name=age::$SECONDS_SINCE_COMMIT"
+
   build-and-publish:
     runs-on: ubuntu-20.04
     needs: get-latest-commit-datetime
@@ -34,3 +35,12 @@ jobs:
         run: |
           echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
           echo GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME
+      - uses: actions/checkout@v2
+      - uses: snapcore/action-build@v1
+        id: build
+      - uses: snapcore/action-publish@v1
+        with:
+          store_login: ${{ secrets.STORE_LOGIN_EDGE }}
+          snap: ${{ steps.build.outputs.snap }}
+          release: edge
+
