@@ -1,7 +1,8 @@
 name: Check upstream activity
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 jobs:
   check-upstream:
