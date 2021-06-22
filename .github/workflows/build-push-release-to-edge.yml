@@ -10,7 +10,7 @@ jobs:
   get-latest-upstream-commit:
     runs-on: ubuntu-latest
     outputs:
-      sha: ${{ steps.fetch-latest-commit.outputs.commit }}
+      sha: ${{ steps.fetch-latest-commit.outputs.sha }}
     steps:
       - id: fetch-latest-commit
         run: |
