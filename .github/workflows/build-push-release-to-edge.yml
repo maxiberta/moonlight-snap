@@ -3,38 +3,49 @@ on:
   push:
     branches: [master]
   schedule:
-    - cron: '55 * * * *'
+    - cron: '42 * * * *'
   workflow_dispatch:
   
 jobs:
-  get-latest-commit-datetime:
+  get-latest-upstream-commit:
     runs-on: ubuntu-latest
     outputs:
-      age: ${{ steps.fetch-latest-commit-datetime.outputs.age }}
+      sha: ${{ steps.fetch-latest-commit.outputs.commit }}
     steps:
-      - id: fetch-latest-commit-datetime
+      - id: fetch-latest-commit
         run: |
-          sudo apt update
-          sudo apt install curl dateutils jq
-          LAST_COMMIT_DATETIME=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .commit.author.date)
-          echo LAST_COMMIT_DATETIME=$LAST_COMMIT_DATETIME
-          SECONDS_SINCE_COMMIT=$(dateutils.ddiff "$LAST_COMMIT_DATETIME" now -f %S)
-          echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
-          echo "::set-output name=age::$SECONDS_SINCE_COMMIT"
+          SHA=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
+          echo "SHA: $SHA"
+          echo "::set-output name=sha::$SHA"
 
+  get-edge-snap-metadata:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.fetch-edge-snap-metadata.outputs.version }}
+    steps:
+      - id: fetch-edge-snap-metadata
+        run: |
+          VERSION=$(curl -s -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
+          | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
+          | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f0]+')
+          echo "VERSION: $VERSION"
+          echo "::set-output name=version::$VERSION"
+  
   build-and-publish:
     runs-on: ubuntu-20.04
-    needs: get-latest-commit-datetime
+    needs: [get-latest-upstream-commit, get-edge-snap-metadata]
     if: |
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'schedule' && needs.get-latest-commit-datetime.outputs.age < 3600)
+      (github.event_name == 'schedule' && !startswith(needs.get-latest-upstream-commit.outputs.sha, needs.get-edge-snap-metadata.outputs.version))
     steps:
       - env:
-          SECONDS_SINCE_COMMIT: ${{ needs.get-latest-commit-datetime.outputs.age }}
+          LATEST_UPSTREAM_COMMIT: ${{ needs.get-latest-upstream-commit.outputs.sha }}
+          EDGE_SNAP_VERSION: ${{ needs.get-edge-snap-metadata.outputs.version }}
         run: |
-          echo SECONDS_SINCE_COMMIT: $SECONDS_SINCE_COMMIT
-          echo GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "LATEST_UPSTREAM_COMMIT: $LATEST_UPSTREAM_COMMIT"
+          echo "EDGE_SNAP_VERSION: $EDGE_SNAP_VERSION"
       - uses: actions/checkout@v2
       - uses: snapcore/action-build@v1
         id: build
