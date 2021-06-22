@@ -14,7 +14,7 @@ jobs:
     steps:
       - id: fetch-latest-commit
         run: |
-          SHA=$(curl -s https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
+          SHA=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
           echo "SHA: $SHA"
           echo "::set-output name=sha::$SHA"
 
@@ -25,7 +25,7 @@ jobs:
     steps:
       - id: fetch-edge-snap-metadata
         run: |
-          VERSION=$(curl -s -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
+          VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
           | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
           | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f0]+')
           echo "VERSION: $VERSION"
