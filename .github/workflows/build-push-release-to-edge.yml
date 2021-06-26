@@ -1,4 +1,4 @@
-name: EDGE automatic builds
+name: Auto EDGE amd64 builds from master (unstable)
 on:
   push:
     branches: [master]
