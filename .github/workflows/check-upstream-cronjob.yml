@@ -30,14 +30,14 @@ jobs:
           echo "VERSION: $VERSION"
           echo "::set-output name=version::$VERSION"
   
-  trigger-build:
+  trigger-edge-build:
     runs-on: ubuntu-20.04
     needs: [get-latest-upstream-commit, get-edge-snap-metadata]
     if: |
        github.event_name == 'workflow_dispatch' ||
        (github.event_name == 'schedule' && !startswith(needs.get-latest-upstream-commit.outputs.sha, needs.get-edge-snap-metadata.outputs.version))
     steps:
-      - name: Trigger build
+      - name: Trigger edge build
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build-event"}' 
+          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}' 
         
