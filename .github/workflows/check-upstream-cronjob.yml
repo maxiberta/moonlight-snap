@@ -1,0 +1,39 @@
+
+name: Check changes in upstream cronjob
+on:
+  schedule:
+    - cron: '30 * * * *'
+  workflow_dispatch:
+  
+jobs:
+  get-latest-upstream-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.fetch-latest-commit.outputs.sha }}
+    steps:
+      - id: fetch-latest-commit
+        run: |
+          SHA=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
+          echo "SHA: $SHA"
+          echo "::set-output name=sha::$SHA"
+  get-edge-snap-metadata:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.fetch-edge-snap-metadata.outputs.version }}
+    steps:
+      - id: fetch-edge-snap-metadata
+        run: |
+          VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
+          | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
+          | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f0]+')
+          echo "VERSION: $VERSION"
+          echo "::set-output name=version::$VERSION"
+  
+  set-output:
+    runs-on: ubuntu-20.04
+    needs: [get-latest-upstream-commit, get-edge-snap-metadata]
+    steps:
+      - name: Trigger build
+        run: |
+          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build"}' 
+        
