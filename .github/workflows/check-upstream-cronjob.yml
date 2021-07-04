@@ -1,5 +1,5 @@
 
-name: Check changes in upstream cronjob
+name: Check upstream changes CRONJOB
 on:
   schedule:
     - cron: '30 * * * *'
@@ -16,6 +16,7 @@ jobs:
           SHA=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
           echo "SHA: $SHA"
           echo "::set-output name=sha::$SHA"
+          
   get-edge-snap-metadata:
     runs-on: ubuntu-latest
     outputs:
@@ -32,8 +33,11 @@ jobs:
   trigger-build:
     runs-on: ubuntu-20.04
     needs: [get-latest-upstream-commit, get-edge-snap-metadata]
+    if: |
+       github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'schedule' && !startswith(needs.get-latest-upstream-commit.outputs.sha, needs.get-edge-snap-metadata.outputs.version))
     steps:
       - name: Trigger build
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build"}' 
+          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build-event"}' 
         
