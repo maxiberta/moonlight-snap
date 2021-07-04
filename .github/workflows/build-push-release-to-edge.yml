@@ -4,7 +4,8 @@ on:
     branches: [master]
   workflow_dispatch:
   repository_dispatch:
-  
+    types: [trigger-edge-build-event]
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
