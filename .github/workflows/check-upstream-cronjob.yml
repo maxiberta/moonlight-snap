@@ -29,11 +29,11 @@ jobs:
           echo "VERSION: $VERSION"
           echo "::set-output name=version::$VERSION"
   
-  set-output:
+  trigger-build:
     runs-on: ubuntu-20.04
     needs: [get-latest-upstream-commit, get-edge-snap-metadata]
     steps:
       - name: Trigger build
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build"}' 
+          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-build"}' 
         
