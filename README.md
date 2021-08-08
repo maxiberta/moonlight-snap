@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://snapcraft.io/moonlight">
-    <img alt="Moonlight" src="https://snapcraft.io/moonlight/badge.svg" />
-  </a>
+  <a href="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml"><img alt="EDGE amd64 builds from master (unstable)" src="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml/badge.svg?branch=master" /></a>
+  <br/>
+  <a href="https://snapcraft.io/moonlight"><img alt="Moonlight" src="https://snapcraft.io/moonlight/badge.svg" /></a>
 </p>
 
 <!-- Uncomment and modify this when you are provided a build status badge
@@ -24,7 +24,7 @@
 
 That'll install the latest _stable_ release of `moonlight`.
 
-Or, if you're feeling adventurous, try the [daily Launchpad.net builds](https://code.launchpad.net/~maxiberta/+snap/moonlight-edge-amd64) available at the `edge` channel:
+Or, if you're feeling adventurous, try the [automatic builds](https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml) available at the `edge` channel:
 
     sudo snap install moonlight --edge
 
