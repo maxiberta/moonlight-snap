@@ -35,8 +35,6 @@ parts:
       snapcraftctl pull
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
     build-packages:
-      - libegl1-mesa-dev
-      - libgl1-mesa-dev
       - libopus-dev
       - libqt5svg5-dev
       - libssl-dev
@@ -160,11 +158,7 @@ parts:
       - libasound2-dev
       - libdbus-1-dev
       - libdrm-dev
-      - libegl1-mesa-dev
       - libgbm-dev
-      - libgl1-mesa-dev
-      - libgles2-mesa-dev
-      - libglu1-mesa-dev
       - libibus-1.0-dev
       - libpulse-dev
       - libsamplerate0-dev
