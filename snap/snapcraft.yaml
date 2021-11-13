@@ -9,7 +9,9 @@ compression: lzo
 
 apps:
   moonlight:
-    command-chain: [bin/desktop-launch]
+    command-chain: &command-chain
+      - bin/desktop-launch
+      - env-wrapper
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
@@ -25,6 +27,10 @@ apps:
       - x11
 
 parts:
+  env-wrapper:
+    plugin: dump
+    source: snap/local/
+
   moonlight-qt:
     plugin: qmake
     qmake-parameters: [PREFIX=/usr]
@@ -216,6 +222,7 @@ parts:
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - moonlight-qt
+      - env-wrapper
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - core20
