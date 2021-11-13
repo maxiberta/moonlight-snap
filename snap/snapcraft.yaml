@@ -9,7 +9,9 @@ compression: lzo
 
 apps:
   moonlight:
-    command-chain: [bin/desktop-launch]
+    command-chain: &command-chain
+      - bin/desktop-launch
+      - env-wrapper
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
@@ -24,23 +26,27 @@ apps:
       - wayland
       - x11
   vainfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/vainfo
     plugs: *plugs
   vdpauinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/vdpauinfo
     plugs: *plugs
   eglinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/eglinfo
     plugs: *plugs
   glxinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/glxinfo
     plugs: *plugs
 
 parts:
+  env-wrapper:
+    plugin: dump
+    source: snap/local/
+
   debugging:
     plugin: nil
     stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo]
@@ -253,6 +259,7 @@ parts:
   cleanup:
     after:  # Make this part run last; list all your other parts here
       - moonlight-qt
+      - env-wrapper
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
       - core20
