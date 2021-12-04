@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '30 * * * *'
   workflow_dispatch:
-  
+
 jobs:
   get-latest-upstream-commit:
     runs-on: ubuntu-latest
@@ -16,7 +16,7 @@ jobs:
           SHA=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
           echo "SHA: $SHA"
           echo "::set-output name=sha::$SHA"
-          
+
   get-edge-snap-metadata:
     runs-on: ubuntu-latest
     outputs:
@@ -29,7 +29,7 @@ jobs:
           | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f0]+')
           echo "VERSION: $VERSION"
           echo "::set-output name=version::$VERSION"
-  
+
   trigger-edge-build:
     runs-on: ubuntu-20.04
     needs: [get-latest-upstream-commit, get-edge-snap-metadata]
@@ -40,4 +40,3 @@ jobs:
       - name: Trigger edge build
         run: |
           curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}' 
-        
