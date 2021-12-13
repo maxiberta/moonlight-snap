@@ -178,6 +178,9 @@ parts:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
     source-tag: release-2.0.18
+    override-build: |
+      git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-edit
+      snapcraftctl build
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
