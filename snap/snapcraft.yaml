@@ -60,6 +60,10 @@ parts:
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
+    override-build: |
+      qmake QMAKE_CFLAGS+="${CFLAGS:-}" QMAKE_CFLAGS+=-g QMAKE_CXXFLAGS+="${CXXFLAGS:-}" QMAKE_LFLAGS+="${LDFLAGS:-}" PREFIX=/usr "${SNAPCRAFT_PART_SRC_WORK}"
+      make -j"${SNAPCRAFT_PARALLEL_BUILD_COUNT}" debug
+      make install INSTALL_ROOT="${SNAPCRAFT_PART_INSTALL}"
     after:
       - desktop-qt5
       - ffmpeg
@@ -143,6 +147,7 @@ parts:
       - --enable-nvdec
       - --enable-pic
       - --enable-shared
+      - --extra-cflags=-g
       - --prefix=/usr
     after:
       - ffnvcodec
@@ -184,6 +189,7 @@ parts:
       - --disable-rpath
       - --disable-sndio
       - --disable-static
+      - CFLAGS=-g
     after:
       - sdl-deps
 
@@ -228,6 +234,7 @@ parts:
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
+      - CFLAGS=-g
     after:
       - sdl
       - sdl-ttf-deps
