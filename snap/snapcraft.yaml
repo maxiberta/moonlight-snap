@@ -159,7 +159,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: dfa64eadd38a6a8125290dcf121f1bc285e98dad
+    source-tag: release-2.0.18
     configflags:
       - --prefix=/usr
       - --disable-alsa
