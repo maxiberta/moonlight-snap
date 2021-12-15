@@ -175,10 +175,6 @@ parts:
       - --disable-rpath
       - --disable-sndio
       - --disable-static
-      - --enable-sdl-dlopen
-      - --enable-video-kmsdrm
-      - --enable-video-wayland
-      - --enable-wayland-shared=no
     build-packages:
       - libasound2-dev
       - libdbus-1-dev
