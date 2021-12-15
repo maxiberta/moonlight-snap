@@ -33,7 +33,10 @@ parts:
 
   moonlight-qt:
     plugin: qmake
-    qmake-parameters: [PREFIX=/usr]
+    qmake-parameters:
+      - PREFIX=/usr
+      # Need to manually set this for the linker to find libdecor when linking SDL...
+      - QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-tag: v3.1.4
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
@@ -169,6 +172,7 @@ parts:
       - --disable-sndio
       - --disable-static
     after:
+      - libdecor
       - sdl-deps
 
   sdl-deps:
@@ -224,6 +228,41 @@ parts:
     stage-packages:
       - libfreetype6
       - libpng16-16
+
+  libdecor:
+    plugin: meson
+    source: https://gitlab.gnome.org/jadahl/libdecor.git
+    source-commit: 754432e3b38356583a9a1270e2b0be7f097968e0
+    meson-parameters:
+      - -Ddemo=false
+      - -Dprefix=/usr
+    after:
+      - libdecor-deps
+
+  libdecor-deps:
+    plugin: nil
+    build-packages:
+      - libcairo2-dev
+      - librust-pangocairo-dev
+    stage-packages:
+      - libcairo2
+      - libdatrie1
+      - libfontconfig1
+      - libfreetype6
+      - libfribidi0
+      - libgraphite2-3
+      - libharfbuzz0b
+      - libpango-1.0-0
+      - libpangocairo-1.0-0
+      - libpangoft2-1.0-0
+      - libpixman-1-0
+      - libpng16-16
+      - libthai0
+      - libwayland-client0
+      - libwayland-cursor0
+      - libxcb-render0
+      - libxcb-shm0
+      - libxrender1
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
