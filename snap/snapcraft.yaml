@@ -55,7 +55,13 @@ parts:
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
+    override-build: |
+      # Use gcc/g++ 8 instead of 7
+      update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+      snapcraftctl build
     build-packages:
+      - gcc-8
+      - g++-8
       - libegl1-mesa-dev
       - libgl1-mesa-dev
       - libopus-dev
