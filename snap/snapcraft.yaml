@@ -31,6 +31,9 @@ parts:
       - PREFIX=/usr
       # Need to manually set this for the linker to find libdecor when linking SDL...
       - QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
+    build-environment: &build-environment
+      - CFLAGS: -O2 -g -pipe
+      - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-tag: v3.2.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
@@ -97,6 +100,7 @@ parts:
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
     source-tag: n8.1.24.13
     make-parameters: [PREFIX=/usr]
+    build-environment: *build-environment
 
   ffmpeg:
     plugin: autotools
@@ -118,6 +122,7 @@ parts:
       - --enable-pic
       - --enable-shared
       - --prefix=/usr
+    build-environment: *build-environment
     after:
       - ffnvcodec
       - libva
@@ -171,6 +176,7 @@ parts:
       - --disable-rpath
       - --disable-sndio
       - --disable-static
+    build-environment: *build-environment
     after:
       - libdecor
       - sdl-deps
@@ -216,6 +222,7 @@ parts:
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
+    build-environment: *build-environment
     after:
       - sdl
       - sdl-ttf-deps
@@ -236,6 +243,7 @@ parts:
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
+    build-environment: *build-environment
     after:
       - libdecor-deps
 
