@@ -65,7 +65,7 @@ parts:
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-pull: |
       snapcraftctl pull
-      snapcraftctl set-version $(git describe --tags --long | sed "s/^v//") ||:
+      snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
     after:
       - desktop-qt5
       - ffmpeg
