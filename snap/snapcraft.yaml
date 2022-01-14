@@ -134,7 +134,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-branch: release/4.4
+    source-branch: release/5.0
     autotools-configure-parameters:
       - --disable-all
       - --disable-static
