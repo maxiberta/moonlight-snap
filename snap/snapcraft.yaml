@@ -38,7 +38,7 @@ parts:
       # Need to manually set this for the linker to find libdecor when linking SDL...
       - QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v3.1.4
+    source-tag: v3.2.0
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-pull: |
       snapcraftctl pull
