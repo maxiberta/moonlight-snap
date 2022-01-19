@@ -259,7 +259,7 @@ parts:
   libdecor:
     plugin: meson
     source: https://gitlab.gnome.org/jadahl/libdecor.git
-    source-commit: 754432e3b38356583a9a1270e2b0be7f097968e0
+    source-commit: a5e1d87dc80d8a71076f64d0fc33f38cc0fc205a
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
