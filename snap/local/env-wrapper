@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Try X / XWayland first, then fall back to native wayland
-export QT_QPA_PLATFORM="xcb;wayland-egl"
-
-exec "$@"
