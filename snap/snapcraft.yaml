@@ -9,7 +9,8 @@ compression: lzo
 
 apps:
   moonlight:
-    command-chain: [bin/desktop-launch]
+    command-chain: &command-chain
+      - bin/desktop-launch
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     plugs: &plugs
@@ -24,19 +25,19 @@ apps:
       - wayland
       - x11
   vainfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/vainfo
     plugs: *plugs
   vdpauinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/vdpauinfo
     plugs: *plugs
   eglinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/eglinfo
     plugs: *plugs
   glxinfo:
-    command-chain: [bin/desktop-launch]
+    command-chain: *command-chain
     command: usr/bin/glxinfo
     plugs: *plugs
 
