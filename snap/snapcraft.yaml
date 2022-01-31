@@ -64,6 +64,7 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
+      - libva
       - sdl
       - sdl-ttf
       - moonlight-qt-deps
@@ -74,8 +75,6 @@ parts:
       - libopus-dev
       - libqt5svg5-dev
       - libssl-dev
-      - libavcodec-dev
-      - libva-dev
       - libvdpau-dev
       - libxkbcommon-dev
       - qt5-default
@@ -99,9 +98,6 @@ parts:
       - libqt5widgets5
       - libsndfile1
       - libsndio7.0
-      - libva-drm2
-      - libva-wayland2
-      - libva-x11-2
       - libvdpau-va-gl1
       - libvdpau1
       - libvorbis0a
@@ -150,21 +146,18 @@ parts:
     build-environment: *build-environment
     after:
       - ffnvcodec
+      - libva
       - sdl
       - ffmpeg-deps
 
   ffmpeg-deps:
     plugin: nil
     build-packages:
-      - libva-dev
       - libvdpau-dev
       - libx265-dev
       - nasm
     stage-packages:
       - libdrm2
-      - libva-drm2
-      - libva-x11-2
-      - libva2
       - libvdpau1
       - libx11-6
       - libxau6
@@ -172,6 +165,22 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
+
+  libva:
+    plugin: autotools
+    source: https://github.com/intel/libva.git
+    source-tag: 2.13.0
+    autotools-configure-parameters:
+      - --prefix=/usr
+    build-environment: *build-environment
+    build-packages:
+      - libdrm-dev
+      - libwayland-dev
+      - libx11-dev
+    stage-packages:
+      - libgl1
+      - libglvnd0
+      - libglx0
 
   sdl:
     plugin: autotools
