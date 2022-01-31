@@ -65,6 +65,7 @@ parts:
       - libasound2
       - libasyncns0
       - libdrm2
+      - libegl1-mesa-dev
       - libflac8
       - libogg0
       - libopus0
