@@ -166,7 +166,8 @@ parts:
     source-commit: a0e3c884d4519d4ae02f5c22c7557759eaea60ca
     override-build: |
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
-      git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-edit
+      git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
+      git -c user.name=maxiberta -c user.email=maxiberta@gmail.com commit --no-edit
       snapcraftctl build
     configflags:
       - --prefix=/usr
