@@ -66,8 +66,6 @@ parts:
       - libopus-dev
       - libqt5svg5-dev
       - libssl-dev
-      - libavcodec-dev
-      - libva-dev
       - libvdpau-dev
       - libxkbcommon-dev
       - qt5-default
@@ -89,9 +87,6 @@ parts:
       - libqt5widgets5
       - libsndfile1
       - libsndio6.1
-      - libva-drm2
-      - libva-wayland2
-      - libva-x11-2
       - libvdpau1
       - libvorbis0a
       - libvorbisenc2
@@ -141,15 +136,11 @@ parts:
       - --enable-shared
       - --prefix=/usr
     build-packages:
-      - libva-dev
       - libvdpau-dev
       - libx265-dev
       - nasm
     stage-packages:
       - libdrm2
-      - libva-drm2
-      - libva-x11-2
-      - libva2
       - libvdpau1
       - libx11-6
       - libxau6
@@ -159,7 +150,22 @@ parts:
       - libxfixes3
     after:
       - ffnvcodec
+      - libva
       - sdl
+
+  libva:
+    plugin: autotools
+    source: https://github.com/intel/libva.git
+    source-tag: 2.14.0
+    configflags:
+      - --prefix=/usr
+    override-build: |
+      autoreconf -i
+      snapcraftctl build
+    build-packages:
+      - libdrm-dev
+      - libwayland-dev
+      - libx11-dev
 
   sdl:
     plugin: autotools
