@@ -169,7 +169,7 @@ parts:
   libva:
     plugin: autotools
     source: https://github.com/intel/libva.git
-    source-tag: 2.13.0
+    source-tag: 2.14.0
     autotools-configure-parameters:
       - --prefix=/usr
     build-environment: *build-environment
@@ -177,10 +177,6 @@ parts:
       - libdrm-dev
       - libwayland-dev
       - libx11-dev
-    stage-packages:
-      - libgl1
-      - libglvnd0
-      - libglx0
 
   sdl:
     plugin: autotools
