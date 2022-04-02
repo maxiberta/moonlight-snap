@@ -160,7 +160,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: cc40f732f9482eb45a1938a23d4f34265e78a729
+    source-commit: cbdb67b4f655000de35acb5629ddb08cc6761e8a
     override-build: |
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
       git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
@@ -240,7 +240,7 @@ parts:
   libdecor:
     plugin: meson
     source: https://gitlab.gnome.org/jadahl/libdecor.git
-    source-commit: a5e1d87dc80d8a71076f64d0fc33f38cc0fc205a
+    source-commit: 870462bd12151c0f5d32a1206c8634d7006d53d9
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
