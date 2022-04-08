@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: snapcore/action-build@v1.0.9
+      - uses: snapcore/action-build@v1
         id: build
       - uses: snapcore/action-publish@v1
         with:
