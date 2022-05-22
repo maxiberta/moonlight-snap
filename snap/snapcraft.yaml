@@ -158,6 +158,10 @@ parts:
       - libdrm-dev
       - libwayland-dev
       - libx11-dev
+    stage-packages:
+      - libgl1
+      - libglvnd0
+      - libglx0
 
   sdl:
     plugin: autotools
