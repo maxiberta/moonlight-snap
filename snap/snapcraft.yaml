@@ -172,7 +172,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 45372b1c276a748e71c373880fbb14d0a92ef6c1
+    source-commit: a95f5a792c2b80e817ca7ad4d4d3e75e107873a6
     override-build: |
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
       git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
