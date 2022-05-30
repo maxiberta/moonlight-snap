@@ -1,5 +1,5 @@
 name: moonlight
-base: core20
+base: core22
 adopt-info: moonlight-qt
 grade: devel
 confinement: strict
@@ -14,7 +14,7 @@ apps:
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     environment:
-      LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libdecor/plugins-1
+      LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libdecor/plugins-1
     plugs: &plugs
       - audio-playback
       - desktop
@@ -49,11 +49,7 @@ parts:
     stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo]
 
   moonlight-qt:
-    plugin: qmake
-    qmake-parameters:
-      - PREFIX=/usr
-      # Need to manually set this for the linker to find libdecor when linking SDL...
-      - QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
+    plugin: make
     build-environment: &build-environment
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
@@ -61,8 +57,12 @@ parts:
     source-branch: master
     parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
     override-pull: |
-      snapcraftctl pull
-      snapcraftctl set-version $(git describe --tags --long | sed "s/^v//")
+      craftctl default
+      craftctl set version=$(git describe --tags --long | sed "s/^v//")
+    override-build: |
+      qmake PREFIX=/usr
+      craftctl default
+      make install INSTALL_ROOT="${CRAFT_PART_INSTALL}"
     after:
       - desktop-qt5
       - ffmpeg
@@ -79,7 +79,6 @@ parts:
       - libssl-dev
       - libvdpau-dev
       - libxkbcommon-dev
-      - qt5-default
       - qt5-qmake
       - qtbase5-dev
       - qtdeclarative5-dev
@@ -192,7 +191,7 @@ parts:
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
       git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
       git -c user.name=maxiberta -c user.email=maxiberta@gmail.com commit --no-edit
-      snapcraftctl build
+      craftctl default
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -246,7 +245,7 @@ parts:
     source-tag: release-2.0.15
     override-build: |
       ./autogen.sh
-      snapcraftctl build
+      craftctl default
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
@@ -280,6 +279,8 @@ parts:
     build-packages:
       - libcairo2-dev
       - librust-pangocairo-dev
+      - meson
+      - ninja-build
     stage-packages:
       - libcairo2
       - libdatrie1
@@ -320,10 +321,10 @@ parts:
     override-prime: |
       set -eux
       for snap in "core20"; do  # List all content-snaps and base snaps you're using here
-        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" "$SNAPCRAFT_PRIME/usr/{}" \;
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for CRUFT in bug lintian man; do
-        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+        rm -rf $CRAFT_PRIME/usr/share/$CRUFT
       done
-      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
-      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
+      find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $CRAFT_PRIME/usr/share -type d -empty -delete
