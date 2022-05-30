@@ -48,10 +48,6 @@ parts:
       - libva
       - sdl
       - sdl-ttf
-      - moonlight-qt-deps
-
-  moonlight-qt-deps:
-    plugin: nil
     build-packages:
       - libopus-dev
       - libqt5svg5-dev
@@ -128,10 +124,6 @@ parts:
       - ffnvcodec
       - libva
       - sdl
-      - ffmpeg-deps
-
-  ffmpeg-deps:
-    plugin: nil
     build-packages:
       - libvdpau-dev
       - libx265-dev
@@ -185,10 +177,6 @@ parts:
     build-environment: *build-environment
     after:
       - libdecor
-      - sdl-deps
-
-  sdl-deps:
-    plugin: nil
     build-packages:
       - libasound2-dev
       - libdbus-1-dev
@@ -231,10 +219,6 @@ parts:
     build-environment: *build-environment
     after:
       - sdl
-      - sdl-ttf-deps
-
-  sdl-ttf-deps:
-    plugin: nil
     build-packages:
       - libfreetype-dev
       - pkg-config
@@ -250,11 +234,6 @@ parts:
       - -Ddemo=false
       - -Dprefix=/usr
     build-environment: *build-environment
-    after:
-      - libdecor-deps
-
-  libdecor-deps:
-    plugin: nil
     build-packages:
       - libcairo2-dev
       - librust-pangocairo-dev
