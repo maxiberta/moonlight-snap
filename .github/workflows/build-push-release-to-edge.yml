@@ -8,11 +8,13 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - uses: snapcore/action-build@v1
         id: build
+        with:
+          snapcraft-channel: candidate
       - uses: snapcore/action-publish@v1
         with:
           store_login: ${{ secrets.STORE_LOGIN_EDGE }}
