@@ -14,7 +14,7 @@ jobs:
       - uses: snapcore/action-build@v1
         id: build
         with:
-          snapcraft-channel: candidate
+          snapcraft-channel: edge
       - uses: snapcore/action-publish@v1
         with:
           store_login: ${{ secrets.STORE_LOGIN_EDGE }}
