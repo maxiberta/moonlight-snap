@@ -16,9 +16,10 @@ jobs:
         with:
           snapcraft-channel: candidate
       - uses: snapcore/action-publish@v1
-        env: 
+        env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN_EDGE }}
         with:
           snap: ${{ steps.build.outputs.snap }}
           release: edge
+          store_login: delete_me
 
