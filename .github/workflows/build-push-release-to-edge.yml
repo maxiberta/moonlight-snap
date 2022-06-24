@@ -15,8 +15,6 @@ jobs:
         id: build
         with:
           snapcraft-channel: candidate
-      - run: |
-          sudo snap refresh snapcraft --stable
       - uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN_EDGE }}
