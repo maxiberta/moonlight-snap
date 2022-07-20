@@ -6,13 +6,14 @@ on:
 
 jobs:
   build-and-publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: snapcore/action-build@v1
         id: build
       - uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN_CANDIDATE }}
         with:
-          store_login: ${{ secrets.STORE_LOGIN_CANDIDATE }}
           snap: ${{ steps.build.outputs.snap }}
           release: candidate
