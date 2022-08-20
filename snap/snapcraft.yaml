@@ -107,7 +107,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n5.0
+    source-tag: n5.1
     autotools-configure-parameters:
       - --disable-all
       - --disable-static
