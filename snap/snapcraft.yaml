@@ -166,7 +166,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: a95f5a792c2b80e817ca7ad4d4d3e75e107873a6
+    source-commit: c6c688ab0184234f3ea8240be80df405fdda5b9a
     override-build: |
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
       git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
@@ -222,7 +222,7 @@ parts:
   sdl-ttf:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.0.15
+    source-tag: release-2.20.1
     override-build: |
       ./autogen.sh
       snapcraftctl build
@@ -246,7 +246,7 @@ parts:
   libdecor:
     plugin: meson
     source: https://gitlab.gnome.org/jadahl/libdecor.git
-    source-commit: a382710b47de8a12857cf2468b391c3428d78323
+    source-commit: 5e58ec6258a45d3149f83e28acb997962cbfc170
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
