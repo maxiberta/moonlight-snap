@@ -196,11 +196,6 @@ parts:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
     source-commit: c6c688ab0184234f3ea8240be80df405fdda5b9a
-    override-build: |
-      # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
-      git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
-      git -c user.name=maxiberta -c user.email=maxiberta@gmail.com commit --no-edit
-      craftctl default
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
