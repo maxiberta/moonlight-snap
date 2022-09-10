@@ -33,8 +33,10 @@ parts:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v4.1.0
-    parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    source-tag: v4.2.0
+    parse-info:
+      - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
+      - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags | sed "s/^v//")
