@@ -32,8 +32,10 @@ parts:
     qt-version: qt5
     options: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v4.1.0
-    parse-info: [usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml]
+    source-tag: v4.2.0
+    parse-info:
+      - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
+      - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version $(git describe --tags | sed "s/^v//")
