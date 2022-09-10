@@ -7,21 +7,6 @@ license: GPL-3.0+
 icon: moonlight.svg
 compression: lzo
 
-# FIXME Not sure why parse-info / adopt-info is not working...
-summary: Play games remotely from your NVIDIA GameStream-enabled PC
-description: |
-  Moonlight can stream games and other applications from a PC with an NVIDIA GeForce GTX/RTX or NVIDIA Quadro GPU and GeForce/Quadro Experience installed.
-  Features include:
-  * Streaming at up to 4K resolution
-  * Support for up to 120 FPS streaming (high refresh rate monitor recommended)
-  * Hardware accelerated video decoding with VAAPI, VDPAU, and NVDEC support
-  * 7.1 surround sound audio support
-  * Support for both pointer capture (for games) and direct mouse control (for remote desktop)
-  * Support for passing system-wide keyboard shortcuts like Alt+Tab to the host
-  * Direct touchscreen mouse control
-  * HEVC support for better video compression efficiency
-  * Gamepad support with force feedback for up to 4 players
-
 apps:
   moonlight:
     command-chain: &command-chain
