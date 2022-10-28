@@ -32,7 +32,7 @@ parts:
     qt-version: qt5
     options: [PREFIX=/usr]
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v4.2.1
+    source-tag: v4.3.0
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
