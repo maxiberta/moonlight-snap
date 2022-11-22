@@ -101,7 +101,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n5.0
+    source-tag: n5.1
     configflags:
       - --disable-all
       - --disable-static
@@ -139,7 +139,7 @@ parts:
   libva:
     plugin: autotools
     source: https://github.com/intel/libva.git
-    source-tag: 2.14.0
+    source-tag: 2.16.0
     configflags:
       - --prefix=/usr
     override-build: |
@@ -153,7 +153,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: a95f5a792c2b80e817ca7ad4d4d3e75e107873a6
+    source-tag: release-2.26.0
     override-build: |
       # Prevent SIGSEGV by manually reverting two input related SDL commits (?)
       git revert 62a562dea20728726a497b4af49d591a2fa385de 531d83bf6a140fcb5a858c9f23c76198016db869 --no-commit
@@ -202,7 +202,7 @@ parts:
   sdl-ttf:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.0.15
+    source-tag: release-2.20.1
     override-build: |
       ./autogen.sh
       snapcraftctl build
