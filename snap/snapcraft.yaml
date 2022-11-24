@@ -197,7 +197,7 @@ parts:
   sdl-ttf:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.20.1
+    source-tag: release-2.0.15
     override-build: |
       ./autogen.sh
       snapcraftctl build
