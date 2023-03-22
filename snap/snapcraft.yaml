@@ -6,6 +6,7 @@ confinement: strict
 license: GPL-3.0+
 icon: moonlight.svg
 compression: lzo
+summary: Stream games and apps from another PC running Sunshine or GeForce Experience
 
 apps:
   moonlight:
