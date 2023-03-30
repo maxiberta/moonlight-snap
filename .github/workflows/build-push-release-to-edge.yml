@@ -1,7 +1,7 @@
-name: EDGE amd64 builds from master (unstable)
+name: EDGE amd64 builds from main (unstable)
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
   repository_dispatch:
     types: [trigger-edge-build-event]
