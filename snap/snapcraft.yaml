@@ -97,26 +97,30 @@ parts:
   ffnvcodec:
     plugin: make
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-    source-tag: n8.1.24.13
+    source-tag: n11.0.10.2
     make-parameters: [PREFIX=/usr]
     build-environment: *build-environment
 
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n5.1
+    source-tag: n6.0
     autotools-configure-parameters:
       - --disable-all
       - --disable-static
       - --enable-avcodec
       - --enable-decoder=h264
       - --enable-decoder=hevc
+      - --enable-decoder=av1
       - --enable-hwaccel=h264_nvdec
       - --enable-hwaccel=h264_vaapi
       - --enable-hwaccel=h264_vdpau
       - --enable-hwaccel=hevc_nvdec
       - --enable-hwaccel=hevc_vaapi
       - --enable-hwaccel=hevc_vdpau
+      - --enable-hwaccel=av1_nvdec
+      - --enable-hwaccel=av1_vaapi
+      - --enable-hwaccel=av1_vdpau
       - --enable-nvdec
       - --enable-pic
       - --enable-shared
