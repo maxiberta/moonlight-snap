@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml"><img alt="EDGE amd64 builds from master (unstable)" src="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml/badge.svg?branch=master" /></a>
+  <a href="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml"><img alt="EDGE amd64 builds from main (unstable)" src="https://github.com/maxiberta/moonlight-snap/actions/workflows/build-push-release-to-edge.yml/badge.svg?branch=main" /></a>
   <br/>
   <a href="https://snapcraft.io/moonlight"><img alt="Moonlight" src="https://snapcraft.io/moonlight/badge.svg" /></a>
 </p>
