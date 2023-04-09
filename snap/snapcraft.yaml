@@ -177,6 +177,8 @@ parts:
       - libdrm-dev
       - libwayland-dev
       - libx11-dev
+      - libx11-xcb-dev
+      - libxcb-dri3-dev
     stage-packages:
       - libgl1
       - libglvnd0
