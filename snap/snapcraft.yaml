@@ -168,6 +168,18 @@ parts:
       - libdrm-dev
       - libwayland-dev
       - libx11-dev
+    stage-packages:
+      - libdrm2
+      - libgl1
+      - libglvnd0
+      - libglx0
+      - libwayland-client0
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
 
   sdl:
     plugin: autotools
