@@ -187,7 +187,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-branch: release-2.26.x
+    source-branch: SDL2
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -253,8 +253,8 @@ parts:
 
   libdecor:
     plugin: meson
-    source: https://gitlab.gnome.org/jadahl/libdecor.git
-    source-branch: master
+    source: https://gitlab.freedesktop.org/libdecor/libdecor.git
+    source-commit: 73260393a97291c887e1074ab7f318e031be0ac6
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
