@@ -63,7 +63,8 @@ parts:
       craftctl default
       craftctl set version=$(git describe --tags --long | sed "s/^v//")
     override-build: |
-      qmake PREFIX=/usr
+      # Need to set rpath manually for the linker to find libdav1d.
+      qmake PREFIX=/usr QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
       craftctl default
       make install INSTALL_ROOT="${CRAFT_PART_INSTALL}"
     after:
@@ -144,11 +145,14 @@ parts:
       - --enable-hwaccel=av1_vaapi
       - --enable-hwaccel=av1_vdpau
       - --enable-nvdec
+      - --enable-libdav1d
+      - --enable-decoder=libdav1d
       - --enable-pic
       - --enable-shared
       - --prefix=/usr
     build-environment: *build-environment
     after:
+      - dav1d
       - ffnvcodec
       - libva
       - sdl
@@ -187,7 +191,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-branch: SDL2
+    source-commit: 64294e45607c557e125969721e4f55b0867379d3
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -285,6 +289,16 @@ parts:
       - libxcb-render0
       - libxcb-shm0
       - libxrender1
+
+  dav1d:
+    plugin: meson
+    source: https://code.videolan.org/videolan/dav1d.git
+    source-tag: 1.2.1
+    meson-parameters:
+      - -Denable_tools=false
+      - -Denable_tests=false
+      - -Dprefix=/usr
+    build-environment: *build-environment
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
