@@ -191,13 +191,12 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 64294e45607c557e125969721e4f55b0867379d3
+    source-commit: 25eca09c7e65a014d3575a95f58b1fdf1d3a5274
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
       - --disable-arts
       - --disable-esd
-      - --disable-libudev
       - --disable-nas
       - --disable-oss
       - --disable-rpath
