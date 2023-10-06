@@ -259,7 +259,7 @@ parts:
   libdecor:
     plugin: meson
     source: https://gitlab.freedesktop.org/libdecor/libdecor.git
-    source-commit: 73260393a97291c887e1074ab7f318e031be0ac6
+    source-tag: 0.2.0
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
@@ -294,7 +294,7 @@ parts:
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.2.1
+    source-tag: 1.3.0
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
