@@ -175,7 +175,7 @@ parts:
   libva:
     plugin: autotools
     source: https://github.com/intel/libva.git
-    source-tag: 2.18.0
+    source-tag: 2.20.0
     autotools-configure-parameters:
       - --prefix=/usr
     build-environment: *build-environment
