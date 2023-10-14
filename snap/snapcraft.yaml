@@ -97,7 +97,7 @@ parts:
   ffnvcodec:
     plugin: make
     source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-    source-tag: n11.0.10.2
+    source-tag: n11.0.10.3
     make-parameters: [PREFIX=/usr]
     build-environment: *build-environment
 
@@ -165,7 +165,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-tag: release-2.26.0
+    source-commit: df6db90dd44984136d3724715fc2451d1b01fd23
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
