@@ -61,7 +61,7 @@ parts:
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
     override-pull: |
       craftctl default
-      git tag 5.0.0-prerelease.2 517b684f856315744fb34aa5411db4e24a4e3837
+      git tag 5.0.0-prerelease.3 53c2c612c9e06a84b4d8fcac56181a64e1fa8154
       craftctl set version=$(git describe --tags --long | sed "s/^v//")
     override-build: |
       # Need to set rpath manually for the linker to find libdav1d.
