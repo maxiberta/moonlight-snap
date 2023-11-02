@@ -34,7 +34,7 @@ parts:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v5.0.0
+    source-tag: v5.0.1
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
