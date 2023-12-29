@@ -146,6 +146,10 @@ parts:
       - --enable-hwaccel=av1_nvdec
       - --enable-hwaccel=av1_vaapi
       - --enable-hwaccel=av1_vdpau
+      - --enable-libdrm
+      - --enable-hwaccel=h264_vulkan
+      - --enable-hwaccel=hevc_vulkan
+      - --enable-hwaccel=av1_vulkan
       - --enable-nvdec
       - --enable-libdav1d
       - --enable-decoder=libdav1d
