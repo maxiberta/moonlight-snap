@@ -162,6 +162,7 @@ parts:
       - ffnvcodec
       - libva
       - sdl
+      - vulkan-sdk
     build-packages:
       - libvdpau-dev
       - libx265-dev
@@ -220,7 +221,6 @@ parts:
       - libpulse-dev
       - libsamplerate0-dev
       - libsndio-dev
-      - libvulkan-dev
       - libwayland-dev
       - libx11-dev
       - libxcursor-dev
@@ -304,6 +304,14 @@ parts:
       - -Denable_tests=false
       - -Dprefix=/usr
     build-environment: *build-environment
+
+  vulkan-sdk:
+    plugin: nil
+    override-pull: |
+      curl -Lso /etc/apt/trusted.gpg.d/lunarg.asc https://packages.lunarg.com/lunarg-signing-key-pub.asc
+      curl -Lso /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+      apt update
+      apt install vulkan-sdk
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
