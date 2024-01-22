@@ -243,7 +243,7 @@ parts:
   sdl-ttf:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.20.1
+    source-tag: release-2.22.0
     override-build: |
       ./autogen.sh
       craftctl default
