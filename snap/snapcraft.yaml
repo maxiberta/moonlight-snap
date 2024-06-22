@@ -34,7 +34,7 @@ parts:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v5.0.1
+    source-tag: v6.0.0
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
@@ -106,7 +106,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n6.0
+    source-tag: n7.0.1
     source-depth: 1
     autotools-configure-parameters:
       - --disable-all
@@ -158,7 +158,7 @@ parts:
   libva:
     plugin: autotools
     source: https://github.com/intel/libva.git
-    source-tag: 2.20.0
+    source-tag: 2.21.0
     autotools-configure-parameters:
       - --prefix=/usr
     build-environment: *build-environment
@@ -176,7 +176,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 4aab2342e9aabc7e506952dbe5e021f3d3604929
+    source-commit: 75340b827de1799a94ee1f41e20022865d452dd8
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -221,7 +221,7 @@ parts:
   sdl-ttf:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.20.1
+    source-tag: release-2.22.0
     override-build: |
       ./autogen.sh
       craftctl default
@@ -241,7 +241,7 @@ parts:
   libdecor:
     plugin: meson
     source: https://gitlab.freedesktop.org/libdecor/libdecor.git
-    source-tag: 0.2.0
+    source-tag: 0.2.2
     meson-parameters:
       - -Ddemo=false
       - -Dprefix=/usr
@@ -276,7 +276,7 @@ parts:
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.3.0
+    source-tag: 1.4.2
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
