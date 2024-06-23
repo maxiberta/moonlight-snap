@@ -39,4 +39,4 @@ jobs:
     steps:
       - name: Trigger edge build
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.REPO_DISPATCH_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}' 
+          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}' 
