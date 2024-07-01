@@ -298,7 +298,7 @@ parts:
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.4.2
+    source-tag: 1.4.3
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
