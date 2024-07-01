@@ -34,7 +34,7 @@ parts:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v6.0.0
+    source-tag: v6.0.1
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
@@ -176,7 +176,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 75340b827de1799a94ee1f41e20022865d452dd8
+    source-commit: a0ec7c0906dfa9b0651fcaea52c12c1acb936562
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -276,7 +276,7 @@ parts:
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.4.2
+    source-tag: 1.4.3
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
