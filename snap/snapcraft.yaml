@@ -282,6 +282,9 @@ parts:
       - -Denable_tests=false
       - -Dprefix=/usr
     build-environment: *build-environment
+    build-packages:
+      - meson
+      - ninja-build
 
   vulkan-sdk:
     plugin: nil
