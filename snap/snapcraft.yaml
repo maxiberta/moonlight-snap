@@ -15,7 +15,7 @@ apps:
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
     environment:
-      LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET/libdecor/plugins-1
+      LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
     plugs: &plugs
       - audio-playback
       - desktop
@@ -65,7 +65,7 @@ parts:
       craftctl set version=$(git describe --tags --long | sed "s/^v//")
     override-build: |
       # Need to set rpath manually for the linker to find libdav1d.
-      qmake PREFIX=/usr QMAKE_LFLAGS+=-Wl,-rpath-link,${SNAPCRAFT_STAGE}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}
+      qmake PREFIX=/usr QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
       craftctl default
       make install INSTALL_ROOT="${CRAFT_PART_INSTALL}"
     after:
@@ -329,7 +329,7 @@ parts:
       - moonlight-qt
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
-      - core20
+      - core22
     override-prime: |
       set -eux
       for snap in "core22"; do  # List all content-snaps and base snaps you're using here
