@@ -8,6 +8,13 @@ icon: moonlight.svg
 compression: lzo
 summary: Stream games and apps from another PC running Sunshine or GeForce Experience
 
+package-repositories:
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 03F5D621A3710FA95A93D89BAA8452080E383F7E
+    url: http://packages.lunarg.com/vulkan
+
 apps:
   moonlight:
     command-chain: [bin/desktop-launch]
@@ -62,6 +69,7 @@ parts:
       - qtbase5-dev
       - qtdeclarative5-dev
       - qtquickcontrols2-5-dev
+      - vulkan-sdk
       - wayland-protocols
     stage-packages:
       - i965-va-driver
@@ -140,11 +148,11 @@ parts:
       - ffnvcodec
       - libva
       - sdl
-      - vulkan-sdk
     build-packages:
       - libvdpau-dev
       - libx265-dev
       - nasm
+      - vulkan-sdk
     stage-packages:
       - libdrm2
       - libvdpau1
@@ -168,6 +176,7 @@ parts:
       - libx11-dev
       - libx11-xcb-dev
       - libxcb-dri3-dev
+      - vulkan-sdk
     stage-packages:
       - libgl1
       - libglvnd0
@@ -285,14 +294,6 @@ parts:
     build-packages:
       - meson
       - ninja-build
-
-  vulkan-sdk:
-    plugin: nil
-    override-pull: |
-      curl -Lso /etc/apt/trusted.gpg.d/lunarg.asc https://packages.lunarg.com/lunarg-signing-key-pub.asc
-      curl -Lso /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
-      apt update
-      apt install vulkan-sdk
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
