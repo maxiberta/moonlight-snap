@@ -327,8 +327,9 @@ parts:
       - -Dprefix=/usr
     build-environment: *build-environment
     build-packages:
-      - meson
       - ninja-build
+    after:
+      - meson
 
   libplacebo:
     plugin: meson
@@ -342,11 +343,19 @@ parts:
       - -Dprefix=/usr
     build-environment: *build-environment
     build-packages:
-      - meson
       - ninja-build
       - vulkan-sdk
     stage-packages:
       - shaderc
+    after:
+      - meson
+
+  meson:
+    plugin: nil
+    build-packages:
+      - pipx
+    override-pull: |
+      PIPX_BIN_DIR=/usr/local/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
