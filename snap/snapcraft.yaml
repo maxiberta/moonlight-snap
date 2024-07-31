@@ -363,6 +363,13 @@ parts:
     source-subdir: qt
     plugin: make
 
+  fix-vulkan-drivers-path:
+    after:
+      - moonlight-qt
+    plugin: nil
+    override-prime: |
+      sed -i s%/usr/lib/x86_64-linux-gnu/%% $CRAFT_PRIME/usr/share/vulkan/icd.d/*.json
+
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
   # at runtime from the content and base snaps, they do not need to be
