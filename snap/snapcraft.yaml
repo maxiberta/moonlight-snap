@@ -88,6 +88,7 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
+      - libplacebo
       - libva
       - sdl
       - sdl-ttf
@@ -129,6 +130,7 @@ parts:
       - libxss1
       - mesa-va-drivers
       - mesa-vdpau-drivers
+      - mesa-vulkan-drivers
       - qml-module-qtquick-controls2
       - qml-module-qtquick-layouts
       - qml-module-qtquick-window2
@@ -152,6 +154,7 @@ parts:
       - --disable-all
       - --disable-static
       - --enable-avcodec
+      - --enable-avformat
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-decoder=av1
@@ -326,6 +329,24 @@ parts:
     build-packages:
       - meson
       - ninja-build
+
+  libplacebo:
+    plugin: meson
+    source: https://github.com/haasn/libplacebo.git
+    source-tag: v7.349.0
+    meson-parameters:
+      - -Ddemos=false
+      - -Dvulkan=enabled
+      - -Dopengl=disabled
+      - -Dshaderc=enabled
+      - -Dprefix=/usr
+    build-environment: *build-environment
+    build-packages:
+      - meson
+      - ninja-build
+      - vulkan-sdk
+    stage-packages:
+      - shaderc
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
