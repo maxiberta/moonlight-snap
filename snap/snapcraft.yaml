@@ -15,14 +15,16 @@ package-repositories:
     key-id: 03F5D621A3710FA95A93D89BAA8452080E383F7E
     url: http://packages.lunarg.com/vulkan
 
+environment:
+  LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
+  VK_ADD_DRIVER_FILES: /var/lib/snapd/lib/vulkan/icd.d:$SNAP/usr/share/vulkan/icd.d
+
 apps:
   moonlight:
     command-chain: &command-chain
       - bin/desktop-launch
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
-    environment:
-      LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
     plugs: &plugs
       - audio-playback
       - desktop
@@ -50,11 +52,19 @@ apps:
     command-chain: *command-chain
     command: usr/bin/glxinfo
     plugs: *plugs
+  vulkaninfo:
+    command-chain: *command-chain
+    command: usr/bin/vulkaninfo
+    plugs: *plugs
 
 parts:
   debugging:
     plugin: nil
-    stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo]
+    after:
+      - libdecor
+    build-packages:
+      - vulkan-sdk
+    stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo, vulkan-tools]
 
   moonlight-qt:
     plugin: make
