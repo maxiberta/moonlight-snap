@@ -147,8 +147,8 @@ parts:
 
   ffmpeg:
     plugin: autotools
-    source: https://git.ffmpeg.org/ffmpeg.git
-    source-branch: release/7.0
+    source: https://github.com/cgutman/FFmpeg.git
+    source-branch: moonlight_7_0_2
     source-depth: 1
     autotools-configure-parameters:
       - --disable-all
