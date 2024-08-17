@@ -121,6 +121,8 @@ parts:
     autotools-configure-parameters:
       - --disable-all
       - --disable-static
+      - --disable-v4l2-m2m
+      - --disable-v4l2-request
       - --enable-avcodec
       - --enable-avformat
       - --enable-decoder=h264
