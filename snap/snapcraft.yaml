@@ -105,8 +105,8 @@ parts:
 
   ffmpeg:
     plugin: autotools
-    source: https://git.ffmpeg.org/ffmpeg.git
-    source-tag: n7.0.1
+    source: https://github.com/cgutman/FFmpeg.git
+    source-branch: moonlight_7_0_2
     source-depth: 1
     autotools-configure-parameters:
       - --disable-all
@@ -158,7 +158,7 @@ parts:
   libva:
     plugin: autotools
     source: https://github.com/intel/libva.git
-    source-tag: 2.21.0
+    source-tag: 2.22.0
     autotools-configure-parameters:
       - --prefix=/usr
     build-environment: *build-environment
@@ -176,7 +176,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 3b7eafedb35829e6ba9d9024c051b81cd25fcfea
+    source-commit: 2824d138b9dcc2c113c8057d0ef377e3edfb24be
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
