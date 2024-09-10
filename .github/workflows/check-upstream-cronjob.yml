@@ -26,12 +26,12 @@ jobs:
         run: |
           VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
           | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
-          | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f0]+')
+          | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f]+')
           echo "VERSION: $VERSION"
           echo "::set-output name=version::$VERSION"
 
   trigger-edge-build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [get-latest-upstream-commit, get-edge-snap-metadata]
     if: |
        github.event_name == 'workflow_dispatch' ||
