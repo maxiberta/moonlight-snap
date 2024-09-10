@@ -148,6 +148,7 @@ parts:
       - --enable-decoder=libdav1d
       - --enable-pic
       - --enable-shared
+      - --enable-swscale
       - --prefix=/usr
     build-environment: *build-environment
     after:
