@@ -43,7 +43,7 @@ parts:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v6.0.1
+    source-tag: v6.1.0
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
@@ -193,7 +193,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 2824d138b9dcc2c113c8057d0ef377e3edfb24be
+    source-commit: 1b26b54402eaa0a4fab4fcc799dcfa80d539fe8b
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
