@@ -295,7 +295,6 @@ parts:
       - libcairo2-dev
       - libgtk-3-dev
       - librust-pangocairo-dev
-      - ninja-build
     stage-packages:
       - libcairo2
       - libdatrie1
@@ -317,7 +316,7 @@ parts:
       - libxcb-shm0
       - libxrender1
     after:
-      - meson
+      - meson-deps
 
   dav1d:
     plugin: meson
@@ -328,10 +327,8 @@ parts:
       - -Denable_tests=false
       - -Dprefix=/usr
     build-environment: *build-environment
-    build-packages:
-      - ninja-build
     after:
-      - meson
+      - meson-deps
 
   libplacebo:
     plugin: meson
@@ -345,19 +342,20 @@ parts:
       - -Dprefix=/usr
     build-environment: *build-environment
     build-packages:
-      - ninja-build
       - vulkan-sdk
     stage-packages:
       - shaderc
     after:
-      - meson
+      - meson-deps
 
-  meson:
+  meson-deps:
     plugin: nil
     build-packages:
       - pipx
     override-pull: |
-      PIPX_BIN_DIR=/usr/local/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
+      PIPX_BIN_DIR=/usr/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
+    stage-packages:
+      - ninja-build
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
