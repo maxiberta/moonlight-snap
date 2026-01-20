@@ -67,10 +67,8 @@ parts:
     stage-packages: [mesa-utils, mesa-utils-extra, vainfo, vdpauinfo, vulkan-tools]
 
   moonlight-qt:
-    plugin: make
-    build-environment: &build-environment
-      - CFLAGS: -O2 -g -pipe
-      - CXXFLAGS: -O2 -g -pipe
+    plugin: qmake
+    qmake-major-version: 5
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info:
@@ -78,13 +76,16 @@ parts:
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
     override-pull: |
       craftctl default
-      git tag 5.0.0-prerelease.3 53c2c612c9e06a84b4d8fcac56181a64e1fa8154
       craftctl set version=$(git describe --tags --long | sed "s/^v//")
-    override-build: |
-      # Need to set rpath manually for the linker to find libdav1d.
-      qmake PREFIX=/usr QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
-      craftctl default
-      make install INSTALL_ROOT="${CRAFT_PART_INSTALL}"
+    build-environment: &build-environment
+      - CFLAGS: -O2 -g -pipe
+      - CXXFLAGS: -O2 -g -pipe
+    qmake-parameters:
+      - CONFIG+=c++17
+      - CONFIG+=disable-cuda
+      - CONFIG+=disable-libdrm
+      - QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${CRAFT_STAGE}/usr/lib  # Need to set rpath manually for the linker to find libdav1d
+      - PREFIX=/usr
     after:
       - desktop-qt5
       - ffmpeg
@@ -148,37 +149,37 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
-    source-branch: moonlight_7_0_2
+    source-branch: moonlight_8.0.1_r1
     source-depth: 1
     autotools-configure-parameters:
-      - --disable-all
+      - --fatal-warnings
+      - --disable-stripping
+      - --enable-pic
+      - --enable-shared
       - --disable-static
+      - --disable-all
       - --disable-v4l2-m2m
       - --disable-v4l2-request
       - --enable-avcodec
       - --enable-avformat
+      - --enable-nvdec
+      - --enable-swscale
+      - --enable-libdav1d
+      - --enable-decoder=libdav1d
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-decoder=av1
       - --enable-hwaccel=h264_nvdec
-      - --enable-hwaccel=h264_vaapi
-      - --enable-hwaccel=h264_vdpau
       - --enable-hwaccel=hevc_nvdec
-      - --enable-hwaccel=hevc_vaapi
-      - --enable-hwaccel=hevc_vdpau
       - --enable-hwaccel=av1_nvdec
+      - --enable-hwaccel=h264_vaapi
+      - --enable-hwaccel=hevc_vaapi
       - --enable-hwaccel=av1_vaapi
-      - --enable-hwaccel=av1_vdpau
-      - --enable-libdrm
+      - --enable-hwaccel=h264_vdpau
+      - --enable-hwaccel=hevc_vdpau
       - --enable-hwaccel=h264_vulkan
       - --enable-hwaccel=hevc_vulkan
       - --enable-hwaccel=av1_vulkan
-      - --enable-nvdec
-      - --enable-libdav1d
-      - --enable-decoder=libdav1d
-      - --enable-pic
-      - --enable-shared
-      - --enable-swscale
       - --prefix=/usr
     build-environment: *build-environment
     after:
@@ -269,9 +270,6 @@ parts:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
     source-tag: release-2.22.0
-    override-build: |
-      ./autogen.sh
-      craftctl default
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
@@ -297,7 +295,6 @@ parts:
       - libcairo2-dev
       - libgtk-3-dev
       - librust-pangocairo-dev
-      - meson
       - ninja-build
     stage-packages:
       - libcairo2
@@ -319,11 +316,13 @@ parts:
       - libxcb-render0
       - libxcb-shm0
       - libxrender1
+    after:
+      - meson
 
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.4.3
+    source-tag: 1.5.2
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
@@ -337,7 +336,7 @@ parts:
   libplacebo:
     plugin: meson
     source: https://github.com/haasn/libplacebo.git
-    source-tag: v7.349.0
+    source-commit: 45f76a46aaf2958febff2a482a059151b480bf99
     meson-parameters:
       - -Ddemos=false
       - -Dvulkan=enabled
