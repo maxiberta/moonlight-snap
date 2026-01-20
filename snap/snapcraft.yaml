@@ -139,13 +139,6 @@ parts:
       - qtwayland5
       - va-driver-all
 
-  ffnvcodec:
-    plugin: make
-    source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-    source-branch: sdk/11.0
-    make-parameters: [PREFIX=/usr]
-    build-environment: *build-environment
-
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
@@ -162,16 +155,12 @@ parts:
       - --disable-v4l2-request
       - --enable-avcodec
       - --enable-avformat
-      - --enable-nvdec
       - --enable-swscale
       - --enable-libdav1d
       - --enable-decoder=libdav1d
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-decoder=av1
-      - --enable-hwaccel=h264_nvdec
-      - --enable-hwaccel=hevc_nvdec
-      - --enable-hwaccel=av1_nvdec
       - --enable-hwaccel=h264_vaapi
       - --enable-hwaccel=hevc_vaapi
       - --enable-hwaccel=av1_vaapi
@@ -184,7 +173,6 @@ parts:
     build-environment: *build-environment
     after:
       - dav1d
-      - ffnvcodec
       - libva
       - sdl
     build-packages:
