@@ -38,10 +38,8 @@ apps:
 
 parts:
   moonlight-qt:
-    plugin: make
-    build-environment: &build-environment
-      - CFLAGS: -O2 -g -pipe
-      - CXXFLAGS: -O2 -g -pipe
+    plugin: qmake
+    qmake-major-version: 5
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-tag: v6.1.0
     parse-info:
@@ -50,11 +48,15 @@ parts:
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags | sed "s/^v//")
-    override-build: |
-      # Need to set rpath manually for the linker to find libdav1d.
-      qmake PREFIX=/usr QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
-      craftctl default
-      make install INSTALL_ROOT="${CRAFT_PART_INSTALL}"
+    build-environment: &build-environment
+      - CFLAGS: -O2 -g -pipe
+      - CXXFLAGS: -O2 -g -pipe
+    qmake-parameters:
+      - CONFIG+=c++17
+      - CONFIG+=disable-cuda
+      - CONFIG+=disable-libdrm
+      - QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${CRAFT_STAGE}/usr/lib  # Need to set rpath manually for the linker to find libdav1d
+      - PREFIX=/usr
     after:
       - desktop-qt5
       - ffmpeg
@@ -108,52 +110,40 @@ parts:
       - qtwayland5
       - va-driver-all
 
-  ffnvcodec:
-    plugin: make
-    source: https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
-    source-tag: n11.0.10.3
-    make-parameters: [PREFIX=/usr]
-    build-environment: *build-environment
-
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
-    source-branch: moonlight_7_0_2
+    source-branch: moonlight_8.0.1_r1
     source-depth: 1
     autotools-configure-parameters:
-      - --disable-all
+      - --fatal-warnings
+      - --disable-stripping
+      - --enable-pic
+      - --enable-shared
       - --disable-static
+      - --disable-all
       - --disable-v4l2-m2m
       - --disable-v4l2-request
       - --enable-avcodec
       - --enable-avformat
+      - --enable-swscale
+      - --enable-libdav1d
+      - --enable-decoder=libdav1d
       - --enable-decoder=h264
       - --enable-decoder=hevc
       - --enable-decoder=av1
-      - --enable-hwaccel=h264_nvdec
       - --enable-hwaccel=h264_vaapi
-      - --enable-hwaccel=h264_vdpau
-      - --enable-hwaccel=hevc_nvdec
       - --enable-hwaccel=hevc_vaapi
-      - --enable-hwaccel=hevc_vdpau
-      - --enable-hwaccel=av1_nvdec
       - --enable-hwaccel=av1_vaapi
-      - --enable-hwaccel=av1_vdpau
-      - --enable-libdrm
+      - --enable-hwaccel=h264_vdpau
+      - --enable-hwaccel=hevc_vdpau
       - --enable-hwaccel=h264_vulkan
       - --enable-hwaccel=hevc_vulkan
       - --enable-hwaccel=av1_vulkan
-      - --enable-nvdec
-      - --enable-libdav1d
-      - --enable-decoder=libdav1d
-      - --enable-pic
-      - --enable-shared
-      - --enable-swscale
       - --prefix=/usr
     build-environment: *build-environment
     after:
       - dav1d
-      - ffnvcodec
       - libva
       - sdl
     build-packages:
@@ -193,7 +183,7 @@ parts:
   sdl:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL.git
-    source-commit: 1b26b54402eaa0a4fab4fcc799dcfa80d539fe8b
+    source-commit: bacfd3c2528ea4515c3f508e8a16679e7e890e19
     autotools-configure-parameters:
       - --prefix=/usr
       - --disable-alsa
@@ -239,9 +229,6 @@ parts:
     plugin: autotools
     source: https://github.com/libsdl-org/SDL_ttf.git
     source-tag: release-2.22.0
-    override-build: |
-      ./autogen.sh
-      craftctl default
     autotools-configure-parameters:
       - --disable-static
       - --prefix=/usr
@@ -267,8 +254,6 @@ parts:
       - libcairo2-dev
       - libgtk-3-dev
       - librust-pangocairo-dev
-      - meson
-      - ninja-build
     stage-packages:
       - libcairo2
       - libdatrie1
@@ -289,25 +274,25 @@ parts:
       - libxcb-render0
       - libxcb-shm0
       - libxrender1
+    after:
+      - meson-deps
 
   dav1d:
     plugin: meson
     source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.4.3
+    source-tag: 1.5.2
     meson-parameters:
       - -Denable_tools=false
       - -Denable_tests=false
       - -Dprefix=/usr
     build-environment: *build-environment
-    build-packages:
-      - ninja-build
     after:
-      - meson
+      - meson-deps
 
   libplacebo:
     plugin: meson
     source: https://github.com/haasn/libplacebo.git
-    source-tag: v7.349.0
+    source-commit: 45f76a46aaf2958febff2a482a059151b480bf99
     meson-parameters:
       - -Ddemos=false
       - -Dvulkan=enabled
@@ -316,19 +301,20 @@ parts:
       - -Dprefix=/usr
     build-environment: *build-environment
     build-packages:
-      - ninja-build
       - vulkan-sdk
     stage-packages:
       - shaderc
     after:
-      - meson
+      - meson-deps
 
-  meson:
+  meson-deps:
     plugin: nil
     build-packages:
       - pipx
     override-pull: |
-      PIPX_BIN_DIR=/usr/local/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
+      PIPX_BIN_DIR=/usr/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
+    stage-packages:
+      - ninja-build
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
