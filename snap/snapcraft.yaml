@@ -142,7 +142,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
-    source-branch: moonlight_8.0.1_r1
+    source-branch: moonlight_8.1_r1
     source-depth: 1
     autotools-configure-parameters:
       - --fatal-warnings
@@ -321,7 +321,7 @@ parts:
   libplacebo:
     plugin: meson
     source: https://github.com/haasn/libplacebo.git
-    source-tag: v7.360.0
+    source-tag: v7.360.1
     meson-parameters:
       - -Ddemos=false
       - -Dvulkan=enabled
