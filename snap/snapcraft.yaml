@@ -142,7 +142,7 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
-    source-branch: moonlight_8.1_r1
+    source-branch: moonlight_8.1_r2
     source-depth: 1
     autotools-configure-parameters:
       - --fatal-warnings
