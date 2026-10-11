@@ -1,5 +1,5 @@
 name: moonlight
-base: core22
+base: core26
 adopt-info: moonlight-qt
 grade: stable
 confinement: strict
@@ -339,10 +339,10 @@ parts:
       - moonlight-qt
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here
-      - core22
+      - core26
     override-prime: |
       set -eux
-      for snap in "core22"; do  # List all content-snaps and base snaps you're using here
+      for snap in "core26"; do  # List all content-snaps and base snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" "$CRAFT_PRIME/usr/{}" \;
       done
       for CRUFT in bug lintian man; do
