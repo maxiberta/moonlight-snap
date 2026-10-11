@@ -53,10 +53,6 @@ parts:
     after:
       - desktop-qt5
       - ffmpeg
-      - libplacebo
-      - libva
-      - sdl
-      - sdl-ttf
     build-packages:
       - libopus-dev
       - libqt5svg5-dev
@@ -69,19 +65,32 @@ parts:
       - qtquickcontrols2-5-dev
       - libvulkan-dev
       - wayland-protocols
+      - libdecor-0-dev
+      - libplacebo-dev
+      - libsdl3-dev
+      - libsdl2-compat-dev
+      - libsdl2-ttf-dev
+      - libva-dev
+      - libdav1d-dev
     stage-packages:
       - i965-va-driver
       - intel-media-va-driver-non-free
       - libasound2
       - libasyncns0
+      - libdav1d7
+      - libdecor-0-0
       - libdrm2
       - libegl1-mesa-dev
       - libflac8
       - libogg0
       - libopus0
+      - libplacebo360
+      - libpng16-16t64
       - libpulse0
-      - libqt5svg5
-      - libqt5widgets5
+      - libsdl2-compat
+      - libsdl2-compat-shim
+      - libsdl2-ttf-2.0-0
+      - libsdl3-0
       - libsndfile1
       - libsndio7.0
       - libvdpau-va-gl1
@@ -135,15 +144,13 @@ parts:
       - --enable-hwaccel=av1_vulkan
       - --prefix=/usr
     build-environment: *build-environment
-    after:
-      - dav1d
-      - libva
-      - sdl
     build-packages:
       - libvdpau-dev
       - libx265-dev
       - nasm
       - libvulkan-dev
+      - libva-dev
+      - libdav1d-dev
     stage-packages:
       - libdrm2
       - libvdpau1
@@ -153,161 +160,6 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
-
-  libva:
-    plugin: autotools
-    source: https://github.com/intel/libva.git
-    source-tag: 2.22.0
-    autotools-configure-parameters:
-      - --prefix=/usr
-    build-environment: *build-environment
-    build-packages:
-      - libdrm-dev
-      - libwayland-dev
-      - libx11-dev
-      - libx11-xcb-dev
-      - libxcb-dri3-dev
-      - vulkan-sdk
-    stage-packages:
-      - libgl1
-      - libglvnd0
-      - libglx0
-
-  sdl:
-    plugin: autotools
-    source: https://github.com/libsdl-org/SDL.git
-    source-branch: SDL2
-    autotools-configure-parameters:
-      - --prefix=/usr
-      - --disable-alsa
-      - --disable-arts
-      - --disable-esd
-      - --disable-nas
-      - --disable-oss
-      - --disable-rpath
-      - --disable-sndio
-      - --disable-static
-    build-environment: *build-environment
-    after:
-      - libdecor
-    build-packages:
-      - libasound2-dev
-      - libdbus-1-dev
-      - libdrm-dev
-      - libgbm-dev
-      - libibus-1.0-dev
-      - libpulse-dev
-      - libsamplerate0-dev
-      - libsndio-dev
-      - libwayland-dev
-      - libx11-dev
-      - libxcursor-dev
-      - libxext-dev
-      - libxi-dev
-      - libxinerama-dev
-      - libxkbcommon-dev
-      - libxrandr-dev
-      - libxss-dev
-      - libxt-dev
-      - libxv-dev
-      - libxxf86vm-dev
-      - pkg-config
-      - wayland-protocols
-    stage-packages:
-      - libwayland-cursor0
-      - libwayland-egl1
-      - libxkbcommon0
-
-  sdl-ttf:
-    plugin: autotools
-    source: https://github.com/libsdl-org/SDL_ttf.git
-    source-tag: release-2.22.0
-    autotools-configure-parameters:
-      - --disable-static
-      - --prefix=/usr
-    build-environment: *build-environment
-    after:
-      - sdl
-    build-packages:
-      - libfreetype-dev
-      - pkg-config
-    stage-packages:
-      - libfreetype6
-      - libpng16-16
-
-  libdecor:
-    plugin: meson
-    source: https://gitlab.freedesktop.org/libdecor/libdecor.git
-    source-tag: 0.2.2
-    meson-parameters:
-      - -Ddemo=false
-      - -Dprefix=/usr
-    build-environment: *build-environment
-    build-packages:
-      - libcairo2-dev
-      - libgtk-3-dev
-      - librust-pangocairo-dev
-    stage-packages:
-      - libcairo2
-      - libdatrie1
-      - libfontconfig1
-      - libfreetype6
-      - libfribidi0
-      - libgraphite2-3
-      - libgtk-3-0
-      - libharfbuzz0b
-      - libpango-1.0-0
-      - libpangocairo-1.0-0
-      - libpangoft2-1.0-0
-      - libpixman-1-0
-      - libpng16-16
-      - libthai0
-      - libwayland-client0
-      - libwayland-cursor0
-      - libxcb-render0
-      - libxcb-shm0
-      - libxrender1
-    after:
-      - meson-deps
-
-  dav1d:
-    plugin: meson
-    source: https://code.videolan.org/videolan/dav1d.git
-    source-tag: 1.5.3
-    meson-parameters:
-      - -Denable_tools=false
-      - -Denable_tests=false
-      - -Dprefix=/usr
-    build-environment: *build-environment
-    after:
-      - meson-deps
-
-  libplacebo:
-    plugin: meson
-    source: https://github.com/haasn/libplacebo.git
-    source-tag: v7.360.1
-    meson-parameters:
-      - -Ddemos=false
-      - -Dvulkan=enabled
-      - -Dopengl=disabled
-      - -Dshaderc=enabled
-      - -Dprefix=/usr
-    build-environment: *build-environment
-    build-packages:
-      - vulkan-sdk
-    stage-packages:
-      - shaderc
-    after:
-      - meson-deps
-
-  meson-deps:
-    plugin: nil
-    build-packages:
-      - pipx
-    override-pull: |
-      PIPX_BIN_DIR=/usr/bin/ PIPX_HOME=/usr/local/lib/pipx/ pipx install meson
-    stage-packages:
-      - ninja-build
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
