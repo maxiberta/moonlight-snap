@@ -10,6 +10,14 @@ summary: Stream games and apps from another PC running Sunshine or GeForce Exper
 
 environment:
   LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
+  QT_QUICK_CONTROLS_STYLE: Material
+  QML_DISABLE_DISK_CACHE: 1
+  FONTCONFIG_PATH: $SNAP/etc/fonts
+  FONTCONFIG_FILE: $SNAP/etc/fonts/fonts.conf
+  XDG_DATA_DIRS: $SNAP/usr/share:$SNAP/usr/local/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+  LD_LIBRARY_PATH: $SNAP/usr/lib:$SNAP/usr/lib64:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libproxy:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/sdl2-compat
+  QT_PLUGIN_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins
+  QML2_IMPORT_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/qml
 
 apps:
   moonlight:
@@ -41,15 +49,20 @@ parts:
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags | sed "s/^v//")
-    build-environment: &build-environment
+    build-environment:
       - CFLAGS: -O2 -g -pipe
       - CXXFLAGS: -O2 -g -pipe
+      - CPATH: ${CRAFT_STAGE}/usr/include/SDL2:${CRAFT_STAGE}/usr/include
+      - LIBRARY_PATH: ${CRAFT_STAGE}/usr/lib64:${CRAFT_STAGE}/usr/lib:${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
+      - CMAKE_PREFIX_PATH: ${CRAFT_STAGE}/usr/lib/cmake:${CRAFT_STAGE}/usr/local/lib/cmake
+      - PKG_CONFIG_PATH: ${CRAFT_STAGE}/lib/pkgconfig:${CRAFT_STAGE}/lib64/pkgconfig:${CRAFT_STAGE}/usr/lib/pkgconfig:${CRAFT_STAGE}/usr/lib64/pkgconfig:${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig
     qmake-parameters:
       - CONFIG+=c++17
       - CONFIG+=disable-cuda
       - CONFIG+=disable-libdrm
-      - QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${CRAFT_STAGE}/usr/lib  # Need to set rpath manually for the linker to find libdav1d
+      - QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${CRAFT_STAGE}/usr/lib:${CRAFT_STAGE}/usr/lib64
       - PREFIX=/usr
+      - INCLUDEPATH+=${CRAFT_STAGE}/usr/include/SDL2
     after:
       - ffmpeg
     build-packages:
@@ -171,7 +184,10 @@ parts:
       - --enable-hwaccel=hevc_vulkan
       - --enable-hwaccel=av1_vulkan
       - --prefix=/usr
-    build-environment: *build-environment
+    build-environment:
+      - CFLAGS: -O2 -g -pipe
+      - CXXFLAGS: -O2 -g -pipe
+      - PKG_CONFIG_PATH: ${CRAFT_STAGE}/lib/pkgconfig:${CRAFT_STAGE}/lib64/pkgconfig:${CRAFT_STAGE}/usr/lib/pkgconfig:${CRAFT_STAGE}/usr/lib64/pkgconfig:${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig
     build-packages:
       - libvdpau-dev
       - libx265-dev
