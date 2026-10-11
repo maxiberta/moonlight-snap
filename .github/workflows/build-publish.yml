@@ -18,7 +18,6 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    if: github.repository == 'maxiberta/moonlight-snap'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
