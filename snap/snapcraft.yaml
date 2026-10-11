@@ -10,13 +10,13 @@ summary: Stream games and apps from another PC running Sunshine or GeForce Exper
 
 environment:
   LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
-  VK_ADD_DRIVER_FILES: /var/lib/snapd/lib/vulkan/icd.d:$SNAP/usr/share/vulkan/icd.d
 
 apps:
   moonlight:
-    command-chain: [bin/desktop-launch]
     command: usr/bin/moonlight
     common-id: com.moonlight_stream.Moonlight
+    desktop: usr/share/applications/com.moonlight_stream.Moonlight.desktop
+    extensions: [gpu]
     plugs: &plugs
       - audio-playback
       - desktop
@@ -71,14 +71,11 @@ parts:
       - libva-dev
       - libdav1d-dev
     stage-packages:
-      - i965-va-driver
-      - intel-media-va-driver-non-free
       - libasound2
       - libasyncns0
       - libdav1d7
       - libdecor-0-0
       - libdrm2
-      - libegl1-mesa-dev
       - libflac8
       - libogg0
       - libopus0
@@ -105,8 +102,6 @@ parts:
       - libqt6widgets6
       - libsndfile1
       - libsndio7.0
-      - libvdpau-va-gl1
-      - libvdpau1
       - libvorbis0a
       - libvorbisenc2
       - libxcursor1
@@ -114,10 +109,6 @@ parts:
       - libxrandr2
       - libxrender1
       - libxss1
-      - mesa-va-drivers
-      - mesa-vdpau-drivers
-      - mesa-vulkan-drivers
-      - va-driver-all
       - qml6-module-qt-labs-qmlmodels
       - qml6-module-qtqml
       - qml6-module-qtqml-models
