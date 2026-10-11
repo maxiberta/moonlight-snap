@@ -1,42 +1,40 @@
-
 name: Check upstream changes CRONJOB
 on:
   schedule:
     - cron: '30 * * * *'
   workflow_dispatch:
 
-jobs:
-  get-latest-upstream-commit:
-    runs-on: ubuntu-latest
-    outputs:
-      sha: ${{ steps.fetch-latest-commit.outputs.sha }}
-    steps:
-      - id: fetch-latest-commit
-        run: |
-          SHA=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
-          echo "SHA: $SHA"
-          echo "::set-output name=sha::$SHA"
+concurrency:
+  group: check-upstream
+  cancel-in-progress: false
 
-  get-edge-snap-metadata:
+jobs:
+  get-upstream-metadata:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
-      version: ${{ steps.fetch-edge-snap-metadata.outputs.version }}
+      upstream-commit: ${{ steps.fetch.outputs.upstream-commit }}
+      snap-version: ${{ steps.fetch.outputs.snap-version }}
     steps:
-      - id: fetch-edge-snap-metadata
+      - id: fetch
         run: |
-          VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
+          UPSTREAM_COMMIT=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
+          SNAP_VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
           | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
           | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f]+')
-          echo "VERSION: $VERSION"
-          echo "::set-output name=version::$VERSION"
+          echo "upstream-commit=$UPSTREAM_COMMIT" | tee -a "$GITHUB_OUTPUT"
+          echo "snap-version=$SNAP_VERSION" | tee -a "$GITHUB_OUTPUT"
 
   trigger-edge-build:
     runs-on: ubuntu-latest
-    needs: [get-latest-upstream-commit, get-edge-snap-metadata]
+    timeout-minutes: 10
+    needs: [get-upstream-metadata]
+    permissions:
+      contents: write
     if: |
        github.event_name == 'workflow_dispatch' ||
-       (github.event_name == 'schedule' && !startswith(needs.get-latest-upstream-commit.outputs.sha, needs.get-edge-snap-metadata.outputs.version))
+       (github.event_name == 'schedule' && !startswith(needs.get-upstream-metadata.outputs.upstream-commit, needs.get-upstream-metadata.outputs.snap-version))
     steps:
       - name: Trigger edge build
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}' 
+          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}'
