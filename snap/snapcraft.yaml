@@ -79,6 +79,7 @@ parts:
     after:
       - ffmpeg
     build-packages:
+      - libflac-dev
       - libopus-dev
       - libssl-dev
       - libvdpau-dev
@@ -97,12 +98,14 @@ parts:
       - libva-dev
       - libdav1d-dev
     stage-packages:
-      - libasound2
+      - libasound2t64
       - libasyncns0
       - libdav1d7
       - libdecor-0-0
       - libdrm2
-      - libflac8
+      - libflac14
+      - libfontconfig1
+      - libfreetype6
       - libogg0
       - libopus0
       - libplacebo360
@@ -128,10 +131,24 @@ parts:
       - libqt6widgets6
       - libsndfile1
       - libsndio7.0
+      - libssl3t64
       - libvorbis0a
       - libvorbisenc2
+      - libwayland-client0
+      - libwayland-cursor0
+      - libwayland-egl1
+      - libx11-6
+      - libx11-xcb1
+      - libxau6
+      - libxcb1
       - libxcursor1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+      - libxi6
       - libxinerama1
+      - libxkbcommon0
+      - libxkbcommon-x11-0
       - libxrandr2
       - libxrender1
       - libxss1
