@@ -8,13 +8,6 @@ icon: moonlight.svg
 compression: lzo
 summary: Stream games and apps from another PC running Sunshine or GeForce Experience
 
-package-repositories:
-  - type: apt
-    components: [main]
-    suites: [jammy]
-    key-id: 03F5D621A3710FA95A93D89BAA8452080E383F7E
-    url: http://packages.lunarg.com/vulkan
-
 environment:
   LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
   VK_ADD_DRIVER_FILES: /var/lib/snapd/lib/vulkan/icd.d:$SNAP/usr/share/vulkan/icd.d
@@ -74,7 +67,7 @@ parts:
       - qtbase5-dev
       - qtdeclarative5-dev
       - qtquickcontrols2-5-dev
-      - vulkan-sdk
+      - libvulkan-dev
       - wayland-protocols
     stage-packages:
       - i965-va-driver
@@ -150,7 +143,7 @@ parts:
       - libvdpau-dev
       - libx265-dev
       - nasm
-      - vulkan-sdk
+      - libvulkan-dev
     stage-packages:
       - libdrm2
       - libvdpau1
@@ -321,13 +314,6 @@ parts:
     source-branch: master
     source-subdir: qt
     plugin: make
-
-  fix-vulkan-drivers-path:
-    after:
-      - moonlight-qt
-    plugin: nil
-    override-prime: |
-      sed -i s%/usr/lib/x86_64-linux-gnu/%% $CRAFT_PRIME/usr/share/vulkan/icd.d/*.json
 
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
