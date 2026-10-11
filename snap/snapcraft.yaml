@@ -156,12 +156,13 @@ parts:
   ffmpeg:
     plugin: autotools
     source: https://github.com/cgutman/FFmpeg.git
-    source-branch: moonlight_8.1_r2
+    source-branch: moonlight_9.0.2_r1
     source-depth: 1
     autotools-configure-parameters:
       - --fatal-warnings
       - --disable-stripping
       - --enable-pic
+      - --enable-lto
       - --enable-shared
       - --disable-static
       - --disable-all
@@ -180,6 +181,7 @@ parts:
       - --enable-hwaccel=av1_vaapi
       - --enable-hwaccel=h264_vdpau
       - --enable-hwaccel=hevc_vdpau
+      - --enable-hwaccel=av1_vdpau
       - --enable-hwaccel=h264_vulkan
       - --enable-hwaccel=hevc_vulkan
       - --enable-hwaccel=av1_vulkan
