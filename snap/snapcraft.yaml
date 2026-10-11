@@ -59,7 +59,7 @@ parts:
 
   moonlight-qt:
     plugin: qmake
-    qmake-major-version: 5
+    qmake-major-version: 6
     source: https://github.com/moonlight-stream/moonlight-qt.git
     source-branch: master
     parse-info:
@@ -78,18 +78,16 @@ parts:
       - QMAKE_LFLAGS+=-Wl,-rpath-link,${CRAFT_STAGE}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${CRAFT_STAGE}/usr/lib  # Need to set rpath manually for the linker to find libdav1d
       - PREFIX=/usr
     after:
-      - desktop-qt5
       - ffmpeg
     build-packages:
       - libopus-dev
-      - libqt5svg5-dev
       - libssl-dev
       - libvdpau-dev
       - libxkbcommon-dev
-      - qt5-qmake
-      - qtbase5-dev
-      - qtdeclarative5-dev
-      - qtquickcontrols2-5-dev
+      - qt6-base-dev
+      - qt6-declarative-dev
+      - qt6-svg-dev
+      - qt6-wayland-dev
       - libvulkan-dev
       - wayland-protocols
       - libdecor-0-dev
@@ -118,6 +116,20 @@ parts:
       - libsdl2-compat-shim
       - libsdl2-ttf-2.0-0
       - libsdl3-0
+      - libqt6core6t64
+      - libqt6dbus6
+      - libqt6gui6
+      - libqt6network6
+      - libqt6opengl6
+      - libqt6openglwidgets6
+      - libqt6qml6
+      - libqt6qmlmodels6
+      - libqt6quick6
+      - libqt6quickcontrols2-6
+      - libqt6quicktemplates2-6
+      - libqt6svg6
+      - libqt6waylandclient6
+      - libqt6widgets6
       - libsndfile1
       - libsndio7.0
       - libvdpau-va-gl1
@@ -132,12 +144,20 @@ parts:
       - mesa-va-drivers
       - mesa-vdpau-drivers
       - mesa-vulkan-drivers
-      - qml-module-qtquick-controls2
-      - qml-module-qtquick-layouts
-      - qml-module-qtquick-window2
-      - qml-module-qtquick2
-      - qtwayland5
       - va-driver-all
+      - qml6-module-qt-labs-qmlmodels
+      - qml6-module-qtqml
+      - qml6-module-qtqml-models
+      - qml6-module-qtqml-workerscript
+      - qml6-module-qtquick
+      - qml6-module-qtquick-controls
+      - qml6-module-qtquick-layouts
+      - qml6-module-qtquick-shapes
+      - qml6-module-qtquick-templates
+      - qml6-module-qtquick-window
+      - qt6-qpa-plugins
+      - qt6-svg-plugins
+      - qt6-wayland
 
   ffmpeg:
     plugin: autotools
@@ -187,12 +207,6 @@ parts:
       - libxdmcp6
       - libxext6
       - libxfixes3
-
-  desktop-qt5:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-branch: master
-    source-subdir: qt
-    plugin: make
 
   # This part removes all the files in this snap which already exist in
   # connected content and base snaps. Since these files will be available
