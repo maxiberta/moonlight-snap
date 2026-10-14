@@ -4,16 +4,17 @@ on:
     branches: [candidate]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: candidate-build
+  cancel-in-progress: true
+
 jobs:
   build-and-publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: snapcore/action-build@v1
-        id: build
-      - uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN_CANDIDATE }}
-        with:
-          snap: ${{ steps.build.outputs.snap }}
-          release: candidate
+    uses: ./.github/workflows/build-publish.yml
+    with:
+      channel: candidate
+    secrets:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN_CANDIDATE }}
