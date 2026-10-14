@@ -9,32 +9,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  get-upstream-metadata:
+  check-and-trigger:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    outputs:
-      upstream-commit: ${{ steps.fetch.outputs.upstream-commit }}
-      snap-version: ${{ steps.fetch.outputs.snap-version }}
-    steps:
-      - id: fetch
-        run: |
-          UPSTREAM_COMMIT=$(curl -s -f https://api.github.com/repos/moonlight-stream/moonlight-qt/commits/master | jq -r .sha)
-          SNAP_VERSION=$(curl -s -f -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/moonlight" \
-          | jq -r '."channel-map"[] | select(.channel.architecture=="amd64" and .channel.track=="latest" and .channel.name=="edge") | .version' \
-          | grep -oP '[0-9\.]+-[0-9]+-g\K[0-9a-f]+')
-          echo "upstream-commit=$UPSTREAM_COMMIT" | tee -a "$GITHUB_OUTPUT"
-          echo "snap-version=$SNAP_VERSION" | tee -a "$GITHUB_OUTPUT"
-
-  trigger-edge-build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: [get-upstream-metadata]
     permissions:
       contents: write
-    if: |
-       github.event_name == 'workflow_dispatch' ||
-       (github.event_name == 'schedule' && !startswith(needs.get-upstream-metadata.outputs.upstream-commit, needs.get-upstream-metadata.outputs.snap-version))
+    env:
+      UPSTREAM_REPO: "moonlight-stream/moonlight-qt"
+      UPSTREAM_REF: "master"
+      SNAP_NAME: "moonlight"
+      SNAP_TRACK: "latest"
+      SNAP_CHANNEL: "edge"
+      SNAP_ARCH: "amd64"
+      TARGET_REPO: ${{ github.repository }}
+      EVENT_TYPE: "trigger-edge-build-event"
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Trigger edge build
+      - id: fetch-upstream
+        name: Fetch upstream commit
         run: |
-          curl -f -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/maxiberta/moonlight-snap/dispatches -d '{"event_type": "trigger-edge-build-event"}'
+          set -euo pipefail
+          upstream_commit=$(gh api "repos/${UPSTREAM_REPO}/commits/${UPSTREAM_REF}" --jq .sha)
+          echo "upstream-commit=$upstream_commit" | tee -a "$GITHUB_OUTPUT"
+
+      - id: fetch-snap
+        name: Fetch snap version
+        run: |
+          set -euo pipefail
+          snap_version=$(curl -sSf --retry 3 --retry-all-errors \
+            -H 'Snap-Device-Series: 16' "https://api.snapcraft.io/v2/snaps/info/${SNAP_NAME}" \
+            | jq -r --arg arch "$SNAP_ARCH" --arg track "$SNAP_TRACK" --arg ch "$SNAP_CHANNEL" \
+              '."channel-map"[] | select(.channel.architecture==$arch and .channel.track==$track and .channel.name==$ch) | .version' \
+            | grep -oP '(?<=-g)[0-9a-f]+')
+          echo "snap-version=$snap_version" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Trigger edge build
+        if: >-
+          !startsWith(steps.fetch-upstream.outputs.upstream-commit, steps.fetch-snap.outputs.snap-version)
+        run: gh api -X POST "repos/${TARGET_REPO}/dispatches" -f event_type="${EVENT_TYPE}"
