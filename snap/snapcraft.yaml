@@ -48,7 +48,7 @@ parts:
     plugin: qmake
     qmake-major-version: 6
     source: https://github.com/moonlight-stream/moonlight-qt.git
-    source-tag: v6.1.0
+    source-tag: v6.2.0
     parse-info:
       - app/deploy/linux/com.moonlight_stream.Moonlight.appdata.xml
       - usr/share/metainfo/com.moonlight_stream.Moonlight.appdata.xml
