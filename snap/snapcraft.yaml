@@ -126,6 +126,8 @@ parts:
       - libasyncns0
       - libdav1d7
       - libdecor-0-0
+      - libdecor-0-plugin-1-cairo
+      - libdecor-0-plugin-1-gtk
       - libdrm2
       - libflac14
       - libfontconfig1
