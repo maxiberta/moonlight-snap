@@ -10,6 +10,7 @@ summary: Stream games and apps from another PC running Sunshine or GeForce Exper
 
 environment:
   LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
+  XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb
   QT_QUICK_CONTROLS_STYLE: Material
   QML_DISABLE_DISK_CACHE: 1
   FONTCONFIG_PATH: $SNAP/etc/fonts
@@ -178,6 +179,7 @@ parts:
       - libxrandr2
       - libxrender1
       - libxss1
+      - xkb-data
       - qml6-module-qt-labs-qmlmodels
       - qml6-module-qtqml
       - qml6-module-qtqml-models
