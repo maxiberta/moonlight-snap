@@ -9,16 +9,16 @@ compression: lzo
 summary: Stream games and apps from another PC running Sunshine or GeForce Experience
 
 environment:
-  LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
-  XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb
-  QT_QUICK_CONTROLS_STYLE: Material
-  QML_DISABLE_DISK_CACHE: 1
-  FONTCONFIG_PATH: $SNAP/etc/fonts
   FONTCONFIG_FILE: $SNAP/etc/fonts/fonts.conf
-  XDG_DATA_DIRS: $SNAP/usr/share:$SNAP/usr/local/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+  FONTCONFIG_PATH: $SNAP/etc/fonts
   LD_LIBRARY_PATH: $SNAP/usr/lib:$SNAP/usr/lib64:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libproxy:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/sdl2-compat
-  QT_PLUGIN_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins
+  LIBDECOR_PLUGIN_DIR: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libdecor/plugins-1
   QML2_IMPORT_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/qml
+  QML_DISABLE_DISK_CACHE: 1
+  QT_PLUGIN_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins
+  QT_QUICK_CONTROLS_STYLE: Material
+  XDG_DATA_DIRS: $SNAP/usr/share:$SNAP/usr/local/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+  XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb
 
 apps:
   moonlight:
