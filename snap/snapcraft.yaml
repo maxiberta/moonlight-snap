@@ -18,7 +18,6 @@ environment:
   QT_PLUGIN_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/qt6/plugins
   QT_QUICK_CONTROLS_STYLE: Material
   XDG_DATA_DIRS: $SNAP/usr/share:$SNAP/usr/local/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
-  XKB_CONFIG_ROOT: $SNAP/usr/share/X11/xkb
 
 apps:
   moonlight:
@@ -128,7 +127,6 @@ parts:
       - libdav1d7
       - libdecor-0-0
       - libdecor-0-plugin-1-cairo
-      - libdecor-0-plugin-1-gtk
       - libdrm2
       - libflac14
       - libfontconfig1
@@ -179,7 +177,6 @@ parts:
       - libxrandr2
       - libxrender1
       - libxss1
-      - xkb-data
       - qml6-module-qt-labs-qmlmodels
       - qml6-module-qtqml
       - qml6-module-qtqml-models
